@@ -11,19 +11,19 @@
   --color-main: #c14fe6;
   --color-bg-body: #0d0d0d;
 
-  --color-tint-1: #a62fca;
-  --color-tint-2: #c14fe6;
-  --color-tint-3: #d580f2;
-  --color-tint-4: #e4aff8;
-  --color-tint-5: #efd2fc;
-  --color-tint-6: #f1e3f6;
+  --color-tint-600: #a62fca;
+  --color-tint-500: #c14fe6;
+  --color-tint-400: #d580f2;
+  --color-tint-300: #e4aff8;
+  --color-tint-200: #efd2fc;
+  --color-tint-100: #f1e3f6;
 
-  --color-shade-1: #721d88;
-  --color-shade-2: #551666;
-  --color-shade-3: #390e44;
-  --color-shade-4: #2b0b33;
-  --color-shade-5: #1c0722;
-  --color-shade-6: #0e0411;
+  --color-shade-100: #721d88;
+  --color-shade-200: #551666;
+  --color-shade-300: #390e44;
+  --color-shade-400: #2b0b33;
+  --color-shade-500: #1c0722;
+  --color-shade-600: #0e0411;
   /*! Brand Colors End*/
 
   /** State Colors Start */
@@ -67,51 +67,17 @@
   --radius-three: 16px;
   --radius-four: 24px;
 
-  /* --background-image-gradient-cool: linear-gradient(
+  --spacing-rl: 108px;
+
+  --background-image-gradient-cool: linear-gradient(
     180deg,
-    var(--color-shade-2) 0%,
+    var(--color-shade-200) 0%,
     var(--color-neutral-1000) 100%
-  ); */
+  );
 }
 @layer components {
   /* Ligh Back */
   .light_back {
-    @apply absolute w-95.5 h-95.5 left-[calc(50%-191px)] -top-41.25 bg-shade-1 blur-[237px] -z-10;
-  }
-
-  /* Gradient With Hover */
-  .gradient-cool {
-    position: relative;
-    overflow: hidden;
-  }
-  .gradient-cool::before,
-  .gradient-cool::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    transition: opacity 0.4s ease;
-  }
-  .gradient-cool::before {
-    background: linear-gradient(
-      180deg,
-      var(--color-shade-2) 0%,
-      var(--color-neutral-1000) 100%
-    );
-    opacity: 1;
-  }
-  .gradient-cool::after {
-    background: linear-gradient(
-      360deg,
-      var(--color-shade-2) 0%,
-      var(--color-neutral-1000) 100%
-    );
-    opacity: 0;
-  }
-  .gradient-cool:hover::before {
-    opacity: 0;
-  }
-  .gradient-cool:hover::after {
-    opacity: 1;
+    @apply absolute w-95.5 h-95.5 left-[calc(50%-191px)] -top-41.25 bg-shade-100 blur-[237px] -z-10;
   }
 }

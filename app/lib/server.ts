@@ -96,3 +96,14 @@ export async function getAllEventSeats() {
 
   return data;
 }
+
+export async function getCustomEvent(nameEvent: string) {
+  const { data, error } = await supabase.from(nameEvent).select("*");
+
+  if (error) {
+    console.error("Error fetching Your Event:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
