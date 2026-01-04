@@ -122,13 +122,14 @@ export const Search = () => {
   );
 };
 
-export const Calendar = () => {
+export const Calendar = ({ className }: { className?: string }) => {
   return (
     <svg
       width="29"
       height="28"
       viewBox="0 0 29 28"
       fill="none"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -165,13 +166,14 @@ export const Calendar = () => {
   );
 };
 
-export const Location = () => {
+export const Location = ({ className }: { className?: string }) => {
   return (
     <svg
       width="24"
       height="29"
       viewBox="0 0 24 29"
       fill="none"
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

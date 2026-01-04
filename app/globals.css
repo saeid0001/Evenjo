@@ -72,7 +72,7 @@
   --background-image-gradient-cool: linear-gradient(
     180deg,
     var(--color-shade-200) 0%,
-    var(--color-neutral-1000) 100%
+    var(--color-neutral-1000) 50%
   );
 }
 @layer components {

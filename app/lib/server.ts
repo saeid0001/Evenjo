@@ -1,7 +1,12 @@
 import { supabase } from "./supabase";
+import { Concerts, Shows, Sports, Festivals } from "./types/event";
 
-export async function getFestivals() {
-  const { data, error } = await supabase.from("festivals").select("*");
+// ************* Festival *********
+export async function getFestivals(): Promise<Festivals> {
+  const { data, error } = await supabase
+    .from("festivals")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
 
   if (error) {
     console.error("Error fetching festivals:", error);
@@ -10,9 +15,21 @@ export async function getFestivals() {
 
   return data.map((row) => row);
 }
+export async function getFestivalSortBycategory(
+  category: string
+): Promise<Festivals> {
+  let query = supabase
+    .from("festivals")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
 
-export async function getConcerts() {
-  const { data, error } = await supabase.from("concerts").select("*");
+  if (category !== "All") {
+    query = query.eq("data->>category", category).limit(4);
+  }
+
+  query = query.limit(4);
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Error fetching concerts:", error);
@@ -21,7 +38,21 @@ export async function getConcerts() {
 
   return data.map((row) => row);
 }
-export async function getConcertsById(concertId: string) {
+
+// ************* Concert *******************
+export async function getConcerts(): Promise<Concerts> {
+  const { data, error } = await supabase
+    .from("concerts")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
+  if (error) {
+    console.error("Error fetching concerts:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
+export async function getConcertsById(concertId: string): Promise<Concerts> {
   const { data, error } = await supabase
     .from("concerts")
     .select("*")
@@ -35,9 +66,36 @@ export async function getConcertsById(concertId: string) {
 
   return data;
 }
+export async function getConcertsSortBycategory(
+  category: string
+): Promise<Concerts> {
+  let query = supabase
+    .from("concerts")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
 
-export async function getShows() {
-  const { data, error } = await supabase.from("shows").select("*");
+  if (category !== "All") {
+    query = query.eq("data->>category", category).limit(4);
+  }
+
+  query = query.limit(4);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching concerts:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
+
+// ************ Show **************
+export async function getShows(): Promise<Shows> {
+  const { data, error } = await supabase
+    .from("shows")
+    .select("*")
+    .order("data->datashow", { ascending: true });
 
   if (error) {
     console.error("Error fetching shows:", error);
@@ -46,12 +104,60 @@ export async function getShows() {
 
   return data.map((row) => row);
 }
+export async function getShowSortBycategory(category: string): Promise<Shows> {
+  let query = supabase
+    .from("shows")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
 
-export async function getSports() {
-  const { data, error } = await supabase.from("sports").select("*");
+  if (category !== "All") {
+    query = query.eq("data->>category", category).limit(4);
+  }
+
+  query = query.limit(4);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching concerts:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
+
+// *************** Sport ************
+export async function getSports(): Promise<Sports> {
+  const { data, error } = await supabase
+    .from("sports")
+    .select("*")
+    .order("data->datasport", { ascending: true });
 
   if (error) {
     console.error("Error fetching sports:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
+export async function getSportSortBycategory(
+  category: string
+): Promise<Sports> {
+  let query = supabase
+    .from("sports")
+    .select("*")
+    .order("data->dataconcert", { ascending: true });
+
+  if (category !== "All") {
+    query = query.eq("data->>category", category).limit(4);
+  }
+
+  query = query.limit(4);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching concerts:", error);
     return [];
   }
 

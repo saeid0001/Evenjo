@@ -57,8 +57,16 @@ const Searchbox = () => {
               }}
               className="flex relative flex-row-reverse px-6 py-3 rounded-three cursor-pointer items-center-safe gap-2 "
             >
-              <span className="text-[18px]">{val.name}</span>
-              {val.icon}
+              <span
+                className={`${
+                  itemName === val.name ? "z-10" : "z-0"
+                } text-[18px]`}
+              >
+                {val.name}
+              </span>
+              <span className={`${itemName === val.name ? "z-10" : "z-0"}`}>
+                {val.icon}
+              </span>
               <div
                 className={`absolute inset-0 bg-linear-to-r from-shade-300 to-shade-100 blur-md ${
                   itemName === val.name

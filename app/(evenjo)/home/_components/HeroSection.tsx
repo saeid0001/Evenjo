@@ -23,7 +23,7 @@ const HeroSection = () => {
     <>
       <div className="relative pb-10">
         <div
-          className="absolute inset-0 mask-t-from-80% mask-b-from-95% -z-20 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 mask-t-from-80% mask-b-from-50% -z-20 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
               "url('group-people-near-stage-concert_250224-1752.webp')",
