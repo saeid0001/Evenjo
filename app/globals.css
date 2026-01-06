@@ -81,3 +81,7 @@
     @apply absolute w-95.5 h-95.5 left-[calc(50%-191px)] -top-41.25 bg-shade-100 blur-[237px] -z-10;
   }
 }
+
+.leaflet-control-attribution {
+  display: none;
+}

@@ -41,7 +41,7 @@ const ShowSection = <T extends Show>({ data, title }: Props<T>) => {
   console.log(searchParams.get("show"));
 
   return (
-    <div className="flex flex-col px-rl">
+    <div className="flex flex-col">
       <div className="flex items-center justify-between pb-2 border-b border-neutral-700">
         <span className=" text-[28px] font-semibold">{title}</span>
         <Link

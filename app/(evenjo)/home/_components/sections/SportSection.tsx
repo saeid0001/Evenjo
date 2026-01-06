@@ -7,7 +7,7 @@ import { Calendar, Location } from "@/app/Ui/svg";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 type Props<T> = {
@@ -17,6 +17,7 @@ type Props<T> = {
 
 const SportSection = <T extends Sport>({ data, title }: Props<T>) => {
   const [isLoadingImg, setIsLoadingImg] = useState(true);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const UpdateCategory = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -41,7 +42,7 @@ const SportSection = <T extends Sport>({ data, title }: Props<T>) => {
   console.log(searchParams.get("sport"));
 
   return (
-    <div className="flex flex-col px-rl">
+    <div className="flex flex-col">
       <div className="flex items-center justify-between pb-2 border-b border-neutral-700">
         <span className=" text-[28px] font-semibold">{title}</span>
         <Link
@@ -81,6 +82,13 @@ const SportSection = <T extends Sport>({ data, title }: Props<T>) => {
             return (
               <div
                 key={value.id}
+                onClick={() =>
+                  router.push(
+                    `/tickets/${value.namesport.replaceAll(" ", "")}_${
+                      value.id
+                    }`
+                  )
+                }
                 className="w-full h-full relative cursor-pointer group mb-20"
               >
                 <div className="relative w-full h-84 rounded-four overflow-hidden">

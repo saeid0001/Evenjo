@@ -1,5 +1,6 @@
 import React from "react";
 import { Logo } from "@/app/Ui/svg";
+import Link from "next/link";
 
 const menu = ["Home", "Shows", "Concerts", "Sports", "Festivals"];
 
@@ -17,7 +18,7 @@ const Navbar = () => {
                 className="cursor-pointer text-[18px] hover:text-white transition-all ease-in duration-150"
                 key={val}
               >
-                {val}
+                <Link href={`/${val.toLowerCase()}`}>{val}</Link>
               </li>
             );
           })}

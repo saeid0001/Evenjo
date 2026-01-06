@@ -35,16 +35,24 @@ const page = async () => {
       <div className="light_back" />
       <HeroSection />
       <Suspense fallback={<LoadingDot />}>
-        <ConcertItemSction />
+        <div className="px-rl">
+          <ConcertItemSction />
+        </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <ShowItemSction />
+        <div className="px-rl">
+          <ShowItemSction />
+        </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <SportItemSction />
+        <div className="px-rl">
+          <SportItemSction />
+        </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <FestivalItemSction />
+        <div className="px-rl">
+          <FestivalItemSction />
+        </div>
       </Suspense>
     </div>
   );

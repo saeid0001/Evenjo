@@ -1,5 +1,3 @@
-// types/event.ts
-
 // ============ مشترک ============
 export type Location = {
   name: string;
@@ -12,18 +10,9 @@ export type Turn = {
   halls: string;
   price: number[];
   category: string[];
-  sold_seats: number;
+  sold_seats?: number;
   turnnumbre: number;
-  available_seats: number;
-};
-
-// Turn برای Festival (بدون seats)
-export type FestivalTurn = {
-  clock: string;
-  halls: string;
-  price: number[];
-  category: string[];
-  turnnumbre: number;
+  available_seats?: number;
 };
 
 // ============ Concert ============
@@ -128,12 +117,13 @@ export type Sports = Sport[];
 // ============ Festival ============
 export type FestivalData = {
   id: string;
-  turn: FestivalTurn[];
+  turn: Turn[];
   category: string;
   location: Location;
   namefestival: string;
   dataconcert: string; // توی دیتا اینطوری هست
   imagefestival: string[];
+  description: string;
 };
 
 export type Festival = {
@@ -148,3 +138,60 @@ export type Festivals = Festival[];
 // ============ Union Type ============
 export type Event = Concert | Show | Sport | Festival;
 export type Events = Event[];
+
+// ************ HelpreFunction *************
+
+// ============ Helper Types ============
+export type EventData = ConcertData | ShowData | SportData | FestivalData;
+
+export type EventType = "concerts" | "shows" | "sports" | "festivals";
+
+// ============ Type Guards ============
+export function isConcertData(data: EventData): data is ConcertData {
+  return "imagesinger" in data;
+}
+
+export function isShowData(data: EventData): data is ShowData {
+  return "imageshow" in data;
+}
+
+export function isSportData(data: EventData): data is SportData {
+  return "imagesport" in data;
+}
+
+export function isFestivalData(data: EventData): data is FestivalData {
+  return "imagefestival" in data;
+}
+
+// ============ Helper Functions ============
+export function getEventImage(data: EventData): Array<string> {
+  if (isConcertData(data)) return data.imagesinger;
+  if (isShowData(data)) return data.imageshow;
+  if (isSportData(data)) return data.imagesport;
+  if (isFestivalData(data)) return data.imagefestival;
+  return [""];
+}
+
+export function getEventName(data: EventData): string {
+  if (isConcertData(data)) return data.namesinger;
+  if (isShowData(data)) return data.nameshow;
+  if (isSportData(data)) return data.namesport;
+  if (isFestivalData(data)) return data.namefestival;
+  return "";
+}
+
+export function getEventDate(data: EventData): string {
+  if (isConcertData(data)) return data.dataconcert;
+  if (isShowData(data)) return data.datashow;
+  if (isSportData(data)) return data.datasport;
+  if (isFestivalData(data)) return data.dataconcert; // festival هم dataconcert داره
+  return "";
+}
+
+export function getEventImages(data: EventData): string[] {
+  if (isConcertData(data)) return data.imagesinger;
+  if (isShowData(data)) return data.imageshow;
+  if (isSportData(data)) return data.imagesport;
+  if (isFestivalData(data)) return data.imagefestival;
+  return [];
+}

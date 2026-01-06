@@ -1,5 +1,14 @@
 import { supabase } from "./supabase";
-import { Concerts, Shows, Sports, Festivals } from "./types/event";
+import {
+  Concerts,
+  Shows,
+  Sports,
+  Festivals,
+  Concert,
+  Show,
+  Festival,
+  Sport,
+} from "./types/event";
 
 // ************* Festival *********
 export async function getFestivals(): Promise<Festivals> {
@@ -52,20 +61,7 @@ export async function getConcerts(): Promise<Concerts> {
 
   return data.map((row) => row);
 }
-export async function getConcertsById(concertId: string): Promise<Concerts> {
-  const { data, error } = await supabase
-    .from("concerts")
-    .select("*")
-    .eq("concert_id", concertId)
-    .single();
 
-  if (error) {
-    console.error("Error fetching concerts:", error);
-    return [];
-  }
-
-  return data;
-}
 export async function getConcertsSortBycategory(
   category: string
 ): Promise<Concerts> {
@@ -212,4 +208,23 @@ export async function getCustomEvent(nameEvent: string) {
   }
 
   return data.map((row) => row);
+}
+
+//! *********** Get All Data with ID *************
+
+export async function getItemById(
+  concertId: string,
+  dataName: string
+): Promise<Concert | Show | Festival | Sport> {
+  const { data, error } = await supabase
+    .from(`${dataName}s`)
+    .select("*")
+    .eq(`${dataName}_id`, concertId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching Tikets By ID:", error);
+  }
+
+  return data;
 }
