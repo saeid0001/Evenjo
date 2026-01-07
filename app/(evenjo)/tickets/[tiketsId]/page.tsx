@@ -1,4 +1,4 @@
-import { getAllDataByNameTable, getItemById } from "@/app/lib/server";
+import { getItemById } from "@/app/lib/server";
 import {
   getEventDate,
   getEventImage,
@@ -17,6 +17,9 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
     `${performance}_${idNumber}`,
     performance
   );
+
+  
+
 
   const eventImage = getEventImage(tiketsData);
   const eventName = getEventName(tiketsData);
@@ -42,8 +45,10 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
           }}
           className={`px-rl flex flex-col items-left justify-center`}
         >
-          <h1 className=" text-[500%] text-left font-bold">{eventName}</h1>
-          <span className="">{tiketsData.description}</span>
+          <h1 className=" max-w-3xl text-[500%] text-left font-bold">
+            {eventName}
+          </h1>
+          <span className="max-w-lg">{tiketsData.description}</span>
         </div>
       </div>
       <div className="grid grid-cols-12 px-rl gap-4">
@@ -95,10 +100,10 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
               />
             );
           })}
-          <EventsSection title={performance} eventType={performance} />
+          <EventsSection title={performance} eventType={performance} idPerform={`${performance}_${idNumber}`}/>
         </div>
 
-        <div className=" h-fit w-full col-span-3 sticky top-5 ">
+        <div className=" h-fit w-full col-span-3 sticky top-25 -translate-y-20 text-transparent ">
           <Image
             src={eventImage[1]}
             alt={eventName}

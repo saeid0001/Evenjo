@@ -1,4 +1,3 @@
-
 import { supabase } from "./supabase";
 import {
   Concerts,
@@ -142,7 +141,8 @@ export async function getItemById(
 
 export async function getAllDataByNameTable(
   category: string,
-  name: string
+  name: string,
+  idPerform?: string
 ): Promise<Events> {
   let query = supabase
     .from(name)
@@ -151,6 +151,10 @@ export async function getAllDataByNameTable(
 
   if (category !== "All") {
     query = query.eq("data->>category", category).limit(4);
+  }
+
+  if (idPerform) {
+    query = query.neq("data->>id", idPerform);
   }
 
   query = query.limit(4);

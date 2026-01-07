@@ -25,12 +25,14 @@ type Props<T extends DataEvents> = {
   data?: T[];
   title: string;
   eventType: string;
+  idPerform?: string;
 };
 
 const EventsSection = <T extends DataEvents>({
   data,
   title,
   eventType,
+  idPerform,
 }: Props<T>) => {
   const [isLoadingImg, setIsLoadingImg] = useState(true);
   const router = useRouter();
@@ -51,7 +53,7 @@ const EventsSection = <T extends DataEvents>({
   const { data: dataConcert, isLoading } = useQuery({
     queryKey: [eventType, getSearchParams],
     queryFn: () =>
-      getAllDataByNameTable(getSearchParams || "All", `${eventType}s`),
+      getAllDataByNameTable(getSearchParams || "All", `${eventType}s` , idPerform),
   });
 
   const dataStructureConcert = dataConcert?.map((val) => val.data);
@@ -118,8 +120,7 @@ const EventsSection = <T extends DataEvents>({
                     alt={name}
                     fill
                     className=" object-cover object-top h-full w-full"
-                    placeholder="blur"
-                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IUwMCIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=="
+                    onLoad={() => setIsLoadingImg(false)}
                   />
                 </div>
                 <div className=" absolute min-h-32 z-20 top-[80%] w-[90%] left-[50%] -translate-x-[50%] bg-neutral-800 group-hover:bg-neutral-400 transition-all ease-in duration-150 border border-neutral-500 rounded-four flex flex-col p-4 gap-y-2 ">

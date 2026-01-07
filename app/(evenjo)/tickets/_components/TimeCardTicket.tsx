@@ -19,7 +19,7 @@ const TimeCardTicket = ({ turnsItem, eventData }: TypeTikets) => {
         <div className=" flex items-center gap-4">
           <Share />
           <Bookmark />
-          <button className="px-4 py-0.75 text-main border border-main rounded-two">
+          <button className="px-4 cursor-pointer py-0.75 text-main border border-main rounded-two">
             Get Tickets
           </button>
         </div>
