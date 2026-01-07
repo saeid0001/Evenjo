@@ -1,4 +1,4 @@
-import { getItemById } from "@/app/lib/server";
+import { getAllDataByNameTable, getItemById } from "@/app/lib/server";
 import {
   getEventDate,
   getEventImage,
@@ -7,8 +7,8 @@ import {
 import { Location } from "@/app/Ui/svg";
 import Image from "next/image";
 import TimeCardTicket from "../_components/TimeCardTicket";
-import ConcertSection from "../../home/_components/sections/ConcertSection";
 import Map from "@/app/components/Map";
+import EventsSection from "../../home/_components/EventsSection";
 
 const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
   const { tiketsId } = await params;
@@ -18,19 +18,12 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
     performance
   );
 
-  const GetNear = () => {
-    switch (performance) {
-      case "concert":
-        return <ConcertSection title={`${performance} near you`} />;
-    }
-  };
-
   const eventImage = getEventImage(tiketsData);
   const eventName = getEventName(tiketsData);
   const eventData = getEventDate(tiketsData);
+
   const hallsPerfo = [...new Set(tiketsData.turn.map((val) => val.halls))];
   const lcationGo = tiketsData.location.geographicallocation;
-  console.log(lcationGo);
 
   return (
     <>
@@ -102,7 +95,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
               />
             );
           })}
-          <GetNear />
+          <EventsSection title={performance} eventType={performance} />
         </div>
 
         <div className=" h-fit w-full col-span-3 sticky top-5 ">

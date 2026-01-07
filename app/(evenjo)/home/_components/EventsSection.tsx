@@ -1,44 +1,60 @@
 "use client";
 
 import LoadingDot from "@/app/components/LoadingDot";
-import { getFestivalSortBycategory } from "@/app/lib/server";
-import { Festival } from "@/app/lib/types/event";
+import { getAllDataByNameTable } from "@/app/lib/server";
+import {
+  EventData,
+  getEventDate,
+  getEventImage,
+  getEventName,
+} from "@/app/lib/types/event";
 import { Calendar, Location } from "@/app/Ui/svg";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-type Props<T> = {
-  data: T[];
-  title: string;
+type DataEvents = {
+  id: string;
+  data: EventData;
+  created_at: string;
 };
 
-const FestivalSection = <T extends Festival>({ data, title }: Props<T>) => {
+type Props<T extends DataEvents> = {
+  data?: T[];
+  title: string;
+  eventType: string;
+};
+
+const EventsSection = <T extends DataEvents>({
+  data,
+  title,
+  eventType,
+}: Props<T>) => {
   const [isLoadingImg, setIsLoadingImg] = useState(true);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const UpdateCategory = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("festival", category);
+    params.set(eventType, category);
     window.history.pushState(null, "", `?${params.toString()}`);
   };
-  const getSearchParams = searchParams.get("festival");
+  const getSearchParams = searchParams.get(eventType);
 
-  const dataStructure = data.map((val) => val.data);
+  const dataStructure = data?.map((val) => val.data);
   const getAllCategory = [
     "All",
-    ...new Set(dataStructure.map((cal) => cal.category)),
+    ...new Set(dataStructure?.map((cal) => cal.category)),
   ];
 
   const { data: dataConcert, isLoading } = useQuery({
-    queryKey: ["festival", getSearchParams],
-    queryFn: () => getFestivalSortBycategory(getSearchParams || "All"),
+    queryKey: [eventType, getSearchParams],
+    queryFn: () =>
+      getAllDataByNameTable(getSearchParams || "All", `${eventType}s`),
   });
 
   const dataStructureConcert = dataConcert?.map((val) => val.data);
-
-  console.log(searchParams.get("festival"));
 
   return (
     <div className="flex flex-col">
@@ -52,35 +68,44 @@ const FestivalSection = <T extends Festival>({ data, title }: Props<T>) => {
         </Link>
       </div>
       <div className="flex gap-2 my-4">
-        {getAllCategory.map((cat) => {
-          return (
-            <button
-              onClick={() => UpdateCategory(cat)}
-              key={cat}
-              className={`
+        {data &&
+          getAllCategory?.map((cat) => {
+            return (
+              <button
+                onClick={() => UpdateCategory(cat)}
+                key={cat}
+                className={`
                 ${
-                  searchParams.get("festival") === null && cat === "All"
+                  searchParams.get(eventType) === null && cat === "All"
                     ? " text-tint-400 bg-gradient-cool border-tint-400"
                     : ""
                 }
                 ${
-                  searchParams.get("festival") === cat
+                  searchParams.get(eventType) === cat
                     ? " text-tint-400 bg-gradient-cool border-tint-400"
                     : ""
                 }  bg-neutral-500 hover:text-tint-400 text-neutral-100 cursor-pointer hover:bg-gradient-cool hover:border-tint-400 border rounded-four px-4 py-2 border-neutral-400 transition-all ease-in duration-150`}
-            >
-              {cat}
-            </button>
-          );
-        })}
+              >
+                {cat}
+              </button>
+            );
+          })}
       </div>
       <div className="flex justify-between gap-4 py-4">
         {isLoading && <LoadingDot />}
         {!isLoading &&
           dataStructureConcert?.map((value) => {
+            const image = getEventImage(value);
+            const name = getEventName(value);
+            const date = getEventDate(value);
             return (
               <div
                 key={value.id}
+                onClick={() =>
+                  router.push(
+                    `/tickets/${name.replaceAll(" ", "")}_${value.id}`
+                  )
+                }
                 className="w-full h-full relative cursor-pointer group mb-20"
               >
                 <div className="relative w-full h-84 rounded-four overflow-hidden">
@@ -89,22 +114,21 @@ const FestivalSection = <T extends Festival>({ data, title }: Props<T>) => {
                     <div className="absolute inset-0 bg-shade-400 animate-pulse " />
                   )}
                   <Image
-                    src={value.imagefestival[0]}
-                    alt={value.namefestival}
+                    src={image[0] || "/locationicon5.png"}
+                    alt={name}
                     fill
                     className=" object-cover object-top h-full w-full"
-                    onLoad={() => setIsLoadingImg(false)}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IUwMCIgZmlsbD0iIzMzMyIvPjwvc3ZnPg=="
                   />
                 </div>
                 <div className=" absolute min-h-32 z-20 top-[80%] w-[90%] left-[50%] -translate-x-[50%] bg-neutral-800 group-hover:bg-neutral-400 transition-all ease-in duration-150 border border-neutral-500 rounded-four flex flex-col p-4 gap-y-2 ">
-                  <h3 className="text-[20px] font-bold line-clamp-1">
-                    {value.namefestival}
-                  </h3>
+                  <h3 className="text-[20px] font-bold line-clamp-1">{name}</h3>
                   <div className=" flex justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-3.5 h-3.5" />
                       <span className=" text-neutral-200 text-[14px]">
-                        {value.dataconcert}
+                        {date}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -126,4 +150,4 @@ const FestivalSection = <T extends Festival>({ data, title }: Props<T>) => {
   );
 };
 
-export default FestivalSection;
+export default EventsSection;

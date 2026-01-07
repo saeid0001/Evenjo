@@ -7,26 +7,27 @@ import {
   getSports,
 } from "@/app/lib/server";
 import { Suspense } from "react";
-import ConcertSection from "./_components/sections/ConcertSection";
-import ShowSection from "./_components/sections/ShowSection";
-import SportSection from "./_components/sections/SportSection";
-import FestivalSection from "./_components/sections/FestivalSection";
+import EventsSection from "./_components/EventsSection";
 
 const ConcertItemSction = async () => {
   const Alldata = await getConcerts();
-  return <ConcertSection data={Alldata} title="Concert" />;
+  console.log(Alldata);
+  return <EventsSection data={Alldata} title="Concert" eventType="concert" />;
 };
 const ShowItemSction = async () => {
   const Alldata = await getShows();
-  return <ShowSection data={Alldata} title="Show" />;
-};
-const SportItemSction = async () => {
-  const Alldata = await getSports();
-  return <SportSection data={Alldata} title="Sport" />;
+  console.log(Alldata);
+  return <EventsSection data={Alldata} title="Show" eventType="show" />;
 };
 const FestivalItemSction = async () => {
   const Alldata = await getFestivals();
-  return <FestivalSection data={Alldata} title="Festival" />;
+  console.log(Alldata);
+  return <EventsSection data={Alldata} title="festival" eventType="festival" />;
+};
+const SportItemSction = async () => {
+  const Alldata = await getSports();
+  console.log(Alldata);
+  return <EventsSection data={Alldata} title="sport" eventType="sport" />;
 };
 
 const page = async () => {
@@ -46,12 +47,12 @@ const page = async () => {
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
         <div className="px-rl">
-          <SportItemSction />
+          <FestivalItemSction />
         </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
         <div className="px-rl">
-          <FestivalItemSction />
+          <SportItemSction />
         </div>
       </Suspense>
     </div>
