@@ -1,6 +1,7 @@
 "use client";
 
 import LoadingDot from "@/app/components/LoadingDot";
+import concertDate from "@/app/lib/concertDate";
 import { getAllDataByNameTable } from "@/app/lib/server";
 import {
   EventData,
@@ -53,7 +54,11 @@ const EventsSection = <T extends DataEvents>({
   const { data: dataConcert, isLoading } = useQuery({
     queryKey: [eventType, getSearchParams],
     queryFn: () =>
-      getAllDataByNameTable(getSearchParams || "All", `${eventType}s` , idPerform),
+      getAllDataByNameTable(
+        getSearchParams || "All",
+        `${eventType}s`,
+        idPerform,
+      ),
   });
 
   const dataStructureConcert = dataConcert?.map((val) => val.data);
@@ -100,12 +105,15 @@ const EventsSection = <T extends DataEvents>({
             const image = getEventImage(value);
             const name = getEventName(value);
             const date = getEventDate(value);
+
+            const [year, month, day] = concertDate(date);
+
             return (
               <div
                 key={value.id}
                 onClick={() =>
                   router.push(
-                    `/tickets/${name.replaceAll(" ", "")}_${value.id}`
+                    `/tickets/${name.replaceAll(" ", "")}_${value.id}`,
                   )
                 }
                 className="w-full h-full relative cursor-pointer group mb-20"
@@ -129,7 +137,7 @@ const EventsSection = <T extends DataEvents>({
                     <div className="flex items-center gap-2">
                       <Calendar className="w-3.5 h-3.5" />
                       <span className=" text-neutral-200 text-[14px]">
-                        {date}
+                        {`${month} ${day} - ${year}`}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">

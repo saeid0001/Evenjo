@@ -18,15 +18,13 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
     performance
   );
 
-  
-
-
   const eventImage = getEventImage(tiketsData);
   const eventName = getEventName(tiketsData);
   const eventData = getEventDate(tiketsData);
 
   const hallsPerfo = [...new Set(tiketsData.turn.map((val) => val.halls))];
   const lcationGo = tiketsData.location.geographicallocation;
+
 
   return (
     <>
@@ -97,10 +95,15 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
                 key={turnsItem.clock}
                 turnsItem={turnsItem}
                 eventData={eventData}
+                path={`${tiketsId}`}
               />
             );
           })}
-          <EventsSection title={performance} eventType={performance} idPerform={`${performance}_${idNumber}`}/>
+          <EventsSection
+            title={performance}
+            eventType={performance}
+            idPerform={`${performance}_${idNumber}`}
+          />
         </div>
 
         <div className=" h-fit w-full col-span-3 sticky top-25 -translate-y-20 text-transparent ">

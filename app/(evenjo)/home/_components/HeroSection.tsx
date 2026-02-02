@@ -10,7 +10,7 @@ const someFeatures = [
   },
   {
     name: "Refundable Tickets",
-    icon: <Ticket />,
+    icon: <Ticket className="fill-neutral-100" />,
   },
   {
     name: "Smart Deals",

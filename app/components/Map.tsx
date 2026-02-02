@@ -3,7 +3,6 @@
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet"; // اضافه کردن leaflet برای استفاده از آیکون
-import { strict } from "assert";
 
 const Map = ({
   lat,

@@ -1,13 +1,19 @@
+import concertDate from "@/app/lib/concertDate";
 import { Turn } from "@/app/lib/types/event";
 import { Bookmark, Calendar, Clock, Location, Share } from "@/app/Ui/svg";
+import Link from "next/link";
+// import { usePathname } from "next/navigation";
 
 interface TypeTikets {
   turnsItem: Turn;
   eventData: string;
+  path: string;
 }
 
-const TimeCardTicket = ({ turnsItem, eventData }: TypeTikets) => {
-  console.log(turnsItem);
+const TimeCardTicket = ({ turnsItem, eventData, path }: TypeTikets) => {
+  // const path = usePathname()
+
+  const [year, month, day] = concertDate(eventData);
 
   return (
     <div className=" mb-4 bg-neutral-900 rounded-four p-6 flex flex-col gap-y-5">
@@ -19,16 +25,19 @@ const TimeCardTicket = ({ turnsItem, eventData }: TypeTikets) => {
         <div className=" flex items-center gap-4">
           <Share />
           <Bookmark />
-          <button className="px-4 cursor-pointer py-0.75 text-main border border-main rounded-two">
+          <Link
+            className="px-4 cursor-pointer py-0.75 text-main border border-main hover:bg-main hover:text-neutral-800 hover:px-5 transition-all ease-in duration-150 rounded-two"
+            href={`${path}/section_${turnsItem.turnnumbre}`}
+          >
             Get Tickets
-          </button>
+          </Link>
         </div>
       </div>
       <div className=" flex justify-between items-end">
         <div className="flex flex-col">
           <div className="flex items-center text-[16px] text-neutral-200 gap-2">
             <Calendar className=" w-4 h-4" />
-            {eventData}
+            {`${month} ${day} - ${year}`}
           </div>
           <div className="flex items-center text-[16px] text-neutral-200 gap-2">
             <Clock />

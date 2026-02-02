@@ -11,29 +11,26 @@ import EventsSection from "./_components/EventsSection";
 
 const ConcertItemSction = async () => {
   const Alldata = await getConcerts();
-  console.log(Alldata);
   return <EventsSection data={Alldata} title="Concert" eventType="concert" />;
 };
 const ShowItemSction = async () => {
   const Alldata = await getShows();
-  console.log(Alldata);
   return <EventsSection data={Alldata} title="Show" eventType="show" />;
 };
 const FestivalItemSction = async () => {
   const Alldata = await getFestivals();
-  console.log(Alldata);
   return <EventsSection data={Alldata} title="festival" eventType="festival" />;
 };
 const SportItemSction = async () => {
   const Alldata = await getSports();
-  console.log(Alldata);
   return <EventsSection data={Alldata} title="sport" eventType="sport" />;
 };
 
 const page = async () => {
+  
   return (
     <div className=" relative">
-      <div className="light_back" />
+      <div className="light_back animate-pulse" />
       <HeroSection />
       <Suspense fallback={<LoadingDot />}>
         <div className="px-rl">

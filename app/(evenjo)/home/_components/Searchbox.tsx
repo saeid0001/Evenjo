@@ -42,8 +42,6 @@ const Searchbox = () => {
     enabled: !!itemName,
   });
 
-  console.log(isLoading);
-  console.log(data);
 
   return (
     <div className="mx-[calc(var(--spacing-rl)+104px)] rounded-three border border-neutral-500  bg-neutral-800 flex flex-col px-10 py-6 gap-y-4">

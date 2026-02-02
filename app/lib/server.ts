@@ -9,6 +9,7 @@ import {
   Festival,
   Sport,
   Events,
+  Venues,
 } from "./types/event";
 
 // ************* Festival *********
@@ -28,10 +29,8 @@ export async function getFestivals(): Promise<Festivals> {
 
 // ************* Concert *******************
 export async function getConcerts(): Promise<Concerts> {
-  const { data, error } = await supabase
-    .from("concerts")
-    .select("*")
-    .order("data->dataconcert", { ascending: true });
+  const { data, error } = await supabase.from("concerts").select("*");
+  // .order("data->dataconcert", { ascending: true });
   if (error) {
     console.error("Error fetching concerts:", error);
     return [];
@@ -70,16 +69,16 @@ export async function getSports(): Promise<Sports> {
   return data.map((row) => row);
 }
 
-export async function getVenuesByID(venues: string) {
+export async function getVenuesByID(venues: string): Promise<Venues> {
   const { data, error } = await supabase
     .from("venues")
     .select("*")
-    .eq("id", venues)
+    .eq("id_hall", venues)
     .single();
 
   if (error) {
     console.error("Error fetching venues:", error);
-    return [];
+    // return []
   }
 
   return data;
@@ -92,7 +91,7 @@ export async function getEventSeats(concertID: string, turnNumber: number) {
     .eq("turn_number", turnNumber);
 
   if (error) {
-    console.error("Error fetching venues:", error);
+    console.error("Error fetching EventSeats:", error);
     return [];
   }
 
@@ -102,7 +101,7 @@ export async function getAllEventSeats() {
   const { data, error } = await supabase.from("event_seats").select("*");
 
   if (error) {
-    console.error("Error fetching venues:", error);
+    console.error("Error fetching AllEventSeats:", error);
     return [];
   }
 
@@ -124,7 +123,7 @@ export async function getCustomEvent(nameEvent: string) {
 
 export async function getItemById(
   concertId: string,
-  dataName: string
+  dataName: string,
 ): Promise<Concert | Show | Festival | Sport> {
   const { data, error } = await supabase
     .from(`${dataName}s`)
@@ -142,7 +141,7 @@ export async function getItemById(
 export async function getAllDataByNameTable(
   category: string,
   name: string,
-  idPerform?: string
+  idPerform?: string,
 ): Promise<Events> {
   let query = supabase
     .from(name)
