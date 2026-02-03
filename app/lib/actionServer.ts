@@ -33,14 +33,16 @@ export async function submitDataToSupabase(items: SeatType) {
 
   if (error) {
     console.error("Supabase Error:", error);
-    throw new Error("خطا در ثبت اطلاعات");
+    throw new Error(`خطا در ثبت اطلاعات : ${error}`);
   }
 
   return { success: true };
 }
 
-export async function deleteDataFromSupabase(id: string, fakeUser: string) {
+export async function deleteDataFromSupabase(id: number, fakeUser: string) {
   const cookieStore = await cookies();
+  console.log(id);
+  
 
   // ساخت کلاینت (به صورت ناشناس کار میکنه چون کوکی لاگین وجود نداره)
   const supabase = createServerClient(
@@ -58,7 +60,7 @@ export async function deleteDataFromSupabase(id: string, fakeUser: string) {
   const { error } = await supabase
     .from("event_seats")
     .delete()
-    .eq("seat_id", id)
+    .eq("id", id)
     .eq("user_id", fakeUser);
 
   if (error) {

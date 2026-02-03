@@ -15,11 +15,9 @@ import {
   Ticket,
 } from "@/app/Ui/svg";
 import concertDate from "@/app/lib/concertDate";
-import SeatCard from "./_components/SeatCard";
 import SeatStageMap from "./_components/SeatStageMap";
-import { useQuery } from "@tanstack/react-query";
-import { SeatType } from "@/app/lib/useSeatStor";
 import { LittleInfoSeat } from "./_components/LittleInfoSeat";
+import SelectionManagerSeat from "./_components/SelectionManagerSeat";
 
 const page = async ({
   params,
@@ -45,6 +43,10 @@ const page = async ({
   const eventDate = getEventDate(tiketsData);
 
   const [year, month, day] = concertDate(eventDate);
+  const oClock = `${getSection[0].clock}
+                  - 
+                  ${`${+getSection[0].clock.slice(0, 2) + 2}:00`}
+                  ${+getSection[0].clock.slice(0, 2) + 2 >= 12 ? " PM" : " AM"}`;
 
   return (
     <>
@@ -85,13 +87,7 @@ const page = async ({
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-2">
                 <Clock className="w-5.25 h-5.25" />
-                <span className=" text-[18px] text-neutral-100">
-                  {getSection[0].clock}
-                  {+getSection[0].clock.slice(0, 2) >= 12 ? " PM" : " AM"}
-                  {" - "}
-                  {`${+getSection[0].clock.slice(0, 2) + 2}:00`}
-                  {+getSection[0].clock.slice(0, 2) + 2 >= 12 ? " PM" : " AM"}
-                </span>
+                <span className=" text-[18px] text-neutral-100">{oClock}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Ticket className="w-5.25 h-5.25 fill-neutral-200" />
@@ -115,6 +111,8 @@ const page = async ({
               data={getHalls}
               type={performance}
               turn={turnnumbreId}
+              eventName={eventName}
+              eventId={idNumber}
             />
           </div>
           <div className=" my-8 px-6 py-3 rounded-three bg-neutral-1000 w-full flex justify-between items-center">
@@ -137,14 +135,19 @@ const page = async ({
           </div>
         </div>
         <div className=" col-span-4  w-full">
-          <div className="bg-neutral-800 px-4 py-2.5 rounded-three mb-3">
-            <span>{getHalls.sections.length} Listings</span>
-          </div>
-          <div className="flex flex-col gap-y-4">
-            {getHalls.sections.map((sec) => {
-              return <SeatCard key={sec.id} sectionData={sec} />;
-            })}
-          </div>
+          <SelectionManagerSeat
+            getHalls={getHalls}
+            type={performance}
+            turn={turnnumbreId}
+            eventName={eventName}
+            eventId={idNumber}
+            clock={oClock}
+            date={{
+              year,
+              month,
+              day,
+            }}
+          />
         </div>
       </div>
     </>

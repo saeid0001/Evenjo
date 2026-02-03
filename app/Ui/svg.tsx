@@ -363,7 +363,7 @@ export const Clock = ({ className }: { className?: string }) => {
   );
 };
 
-export const Seat = ({className} : {className?:string}) => {
+export const Seat = ({ className }: { className?: string }) => {
   return (
     <svg
       width="28"
