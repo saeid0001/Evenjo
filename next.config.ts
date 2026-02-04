@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.dawn.com",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
     ],
   },
 };

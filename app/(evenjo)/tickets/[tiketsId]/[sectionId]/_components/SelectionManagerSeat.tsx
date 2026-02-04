@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Venues } from "@/app/lib/types/event";
 import SeatCard from "./SeatCard";
 import { useQueryEventSeats } from "@/app/hooks/useQueryEventSeats";
@@ -8,6 +8,7 @@ import { Calendar, Chair, Clock, Ticket } from "@/app/Ui/svg";
 import LoadingDot from "@/app/components/LoadingDot";
 import ModalCart from "./ModalCart";
 import { useSeatStor } from "@/app/lib/useSeatStor";
+import { supabase } from "@/app/lib/supabase";
 
 const SelectionManagerSeat = ({
   getHalls,
@@ -31,13 +32,38 @@ const SelectionManagerSeat = ({
   };
 }) => {
   const [data, isLoading] = useQueryEventSeats();
+  const [getUserId, setGetUserId] = useState("");
   const popup = useSeatStor((state) => state.selectItem);
   const Toggle = useSeatStor((state) => state.setSelectItem);
 
-  const getUserId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("guest_session_id")
-      : null;
+  useEffect(() => {
+    const storedUserId =
+      typeof window !== "undefined"
+        ? localStorage.getItem("guest_session_id")
+        : null;
+    const fetchAuth = async () => {
+      const getUser = await supabase.auth.getUser();
+      if (getUser.data.user?.id) {
+        setGetUserId(getUser.data.user?.id);
+      } else {
+        setGetUserId(storedUserId || "");
+      }
+    };
+    fetchAuth();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setGetUserId(session.user.id);
+      } else {
+        const storedUserId = localStorage.getItem("guest_session_id");
+        setGetUserId(storedUserId || "");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const showDetailSeatCart = data?.filter(
     (val) =>
@@ -48,6 +74,8 @@ const SelectionManagerSeat = ({
       val.event_id === eventId &&
       val.turn_number === Number(turn),
   );
+
+  console.log(showDetailSeatCart);
 
   useEffect(() => {
     if (showDetailSeatCart && showDetailSeatCart.length === 0) {

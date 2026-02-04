@@ -6,11 +6,13 @@ import {
   submitDataToSupabase,
 } from "@/app/lib/actionServer";
 import { fakeUserId } from "@/app/lib/fakeUserId";
+import { supabase } from "@/app/lib/supabase";
 import { Venues } from "@/app/lib/types/event";
 import { SeatType } from "@/app/lib/useSeatStor";
 import { Line, Seat } from "@/app/Ui/svg";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const SeatStageMap = ({
   data,
@@ -25,9 +27,27 @@ const SeatStageMap = ({
   eventName: string;
   eventId: string;
 }) => {
+  // const fakeUser = fakeUserId()!;
+  const [auth, setAuth] = useState("");
+
+  useEffect(() => {
+    const fetchAuth = async () => {
+      const fakeUser = await fakeUserId();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user?.id && fakeUser === null) {
+        setAuth(user?.id);
+      } else {
+        setAuth(fakeUser!);
+      }
+    };
+    fetchAuth();
+  }, []);
+
   const searchParams = useSearchParams();
   const getSeatFilter = searchParams.get("row") || "a";
-  const fakeUser = fakeUserId()!;
+
   const queryClient = useQueryClient();
 
   const [getAllSeatEvent, isLoading] = useQueryEventSeats();
@@ -51,7 +71,7 @@ const SeatStageMap = ({
     mutationFn: async (id: number) => {
       console.log(id, "Thih");
 
-      return await deleteDataFromSupabase(id, fakeUser);
+      return await deleteDataFromSupabase(id, auth);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["eventSeats"] });
@@ -102,10 +122,10 @@ const SeatStageMap = ({
                   const isSold = serverSeat?.status === "sold";
                   const isSelectedByMe =
                     serverSeat?.status === "selected" &&
-                    serverSeat?.user_id === fakeUser;
+                    serverSeat?.user_id === auth;
                   const isSelectedByOthers =
                     serverSeat?.status === "selected" &&
-                    serverSeat?.user_id !== fakeUser;
+                    serverSeat?.user_id !== auth;
 
                   const handleSeatClick = () => {
                     if (isSold || isSelectedByOthers) return;
@@ -123,7 +143,7 @@ const SeatStageMap = ({
                         number: value.number,
                         status: "selected",
                         price_paid: set.price,
-                        user_id: fakeUser,
+                        user_id: auth,
                         event_name: eventName,
                         section_name: set.name,
                       });

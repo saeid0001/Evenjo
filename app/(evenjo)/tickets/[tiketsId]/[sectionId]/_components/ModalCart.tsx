@@ -1,7 +1,9 @@
 "use client";
 
+import { supabase } from "@/app/lib/supabase";
 import { SeatType, useSeatStor } from "@/app/lib/useSeatStor";
 import { Calendar, Clock, Location, Ticket } from "@/app/Ui/svg";
+import { stat } from "fs";
 import Image from "next/image";
 
 const ModalCart = ({
@@ -16,6 +18,8 @@ const ModalCart = ({
   date?: { year: string; month: string; day: string };
 }) => {
   const Toggle = useSeatStor((state) => state.setSelectItem);
+  
+
   return (
     <>
       <div
@@ -90,7 +94,10 @@ const ModalCart = ({
           >
             Change Seat
           </button>
-          <button className=" w-2/4 px-4 py-1.5 bg-main text-white rounded-two cursor-pointer hover:bg-main/50 transition-all ease-in duration-150 font-bold">
+          <button
+            // onClick={handelClick}
+            className=" w-2/4 px-4 py-1.5 bg-main text-white rounded-two cursor-pointer hover:bg-main/50 transition-all ease-in duration-150 font-bold"
+          >
             Continue
           </button>
         </div>
