@@ -65,6 +65,8 @@ const SelectionManagerSeat = ({
     return () => subscription.unsubscribe();
   }, []);
 
+  console.log("Seat :", getUserId);
+
   const showDetailSeatCart = data?.filter(
     (val) =>
       val.status === "selected" &&

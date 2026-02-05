@@ -43,6 +43,18 @@ const SeatStageMap = ({
       }
     };
     fetchAuth();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setAuth(session.user.id);
+      } else {
+        const fake = localStorage.getItem("guest_session_id");
+        setAuth(fake || "");
+      }
+    });
+    return () => subscription.unsubscribe();
   }, []);
 
   const searchParams = useSearchParams();

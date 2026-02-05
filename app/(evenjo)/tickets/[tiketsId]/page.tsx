@@ -12,7 +12,7 @@ import EventsSection from "../../home/_components/EventsSection";
 
 const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
   const { tiketsId } = await params;
-  const [_, performance, idNumber] = tiketsId.split("_");
+  const [, performance, idNumber] = tiketsId.split("_");
   const { data: tiketsData } = await getItemById(
     `${performance}_${idNumber}`,
     performance

@@ -6,14 +6,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import LoadingDot from "./LoadingDot";
-import { useRouter } from "next/navigation";
 
 const menu = ["Home", "Shows", "Concerts", "Sports", "Festivals"];
 
 const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const route = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -29,7 +27,6 @@ const Navbar = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Auth Event:", event);
       if (session) {
         setUser(session.user);
       } else {
@@ -38,7 +35,6 @@ const Navbar = () => {
       setLoading(false);
     });
 
-    // پاکسازی در هنگام Unmount شدن کامپوننت
     return () => {
       subscription.unsubscribe();
     };
@@ -50,11 +46,12 @@ const Navbar = () => {
     window.location.reload();
   };
 
-  console.log(user);
+  console.log("NabBar :", user);
+
   return (
     <div className="flex justify-between items-center px-rl py-4">
       <div>
-        <Logo />
+        <Logo className=" fill-main" />
       </div>
       <div>
         <ul className="flex gap-6 text-neutral-200">
