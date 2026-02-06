@@ -46,8 +46,6 @@ const Navbar = () => {
     window.location.reload();
   };
 
-  console.log("NabBar :", user);
-
   return (
     <div className="flex justify-between items-center px-rl py-4">
       <div>

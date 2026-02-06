@@ -54,3 +54,36 @@ export async function mirgeSeatSelection(
     }
   }
 }
+
+export async function updateStatus(user: string, status: string) {
+  const supabase = await getSupabase();
+
+  const { error } = await supabase
+    .from("event_seats")
+    .update({ status, created_at: new Date().toISOString() })
+    .eq("user_id", user);
+
+  if (error) {
+    console.error("Supabase Error:", error);
+    throw new Error(`خطا در به‌روزرسانی وضعیت : ${error}`);
+  }
+
+  return { success: true };
+}
+
+export async function deleteAllSeatWithUserId(id: string, status: string) {
+  const supabase = await getSupabase();
+
+  const { error } = await supabase
+    .from("event_seats")
+    .delete()
+    .eq("user_id", id)
+    .eq("status", status);
+
+  if (error) {
+    console.error("Supabase Error:", error);
+    throw new Error("خطا در ثبت اطلاعات");
+  }
+
+  return { success: true };
+}

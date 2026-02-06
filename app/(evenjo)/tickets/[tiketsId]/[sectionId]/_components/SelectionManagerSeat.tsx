@@ -33,6 +33,7 @@ const SelectionManagerSeat = ({
 }) => {
   const [data, isLoading] = useQueryEventSeats();
   const [getUserId, setGetUserId] = useState("");
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const popup = useSeatStor((state) => state.selectItem);
   const Toggle = useSeatStor((state) => state.setSelectItem);
 
@@ -42,12 +43,14 @@ const SelectionManagerSeat = ({
         ? localStorage.getItem("guest_session_id")
         : null;
     const fetchAuth = async () => {
+      setIsUserLoading(true);
       const getUser = await supabase.auth.getUser();
       if (getUser.data.user?.id) {
         setGetUserId(getUser.data.user?.id);
       } else {
         setGetUserId(storedUserId || "");
       }
+      setIsUserLoading(false);
     };
     fetchAuth();
 
@@ -65,19 +68,15 @@ const SelectionManagerSeat = ({
     return () => subscription.unsubscribe();
   }, []);
 
-  console.log("Seat :", getUserId);
-
   const showDetailSeatCart = data?.filter(
     (val) =>
-      val.status === "selected" &&
+      (val.status === "selected" || val.status === "payment") &&
       val.user_id === getUserId &&
       val.event_name === eventName &&
       val.event_type === type &&
       val.event_id === eventId &&
       val.turn_number === Number(turn),
   );
-
-  console.log(showDetailSeatCart);
 
   useEffect(() => {
     if (showDetailSeatCart && showDetailSeatCart.length === 0) {
@@ -103,15 +102,15 @@ const SelectionManagerSeat = ({
 
   return (
     <>
-      {isLoading && <LoadingDot />}
-      {showDetailSeatCart?.length === 0 && !isLoading && (
+      {isLoading && isUserLoading && <LoadingDot />}
+      {!isLoading && !isUserLoading && showDetailSeatCart?.length === 0 && (
         <div className="flex flex-col gap-y-4">
           {getHalls.sections.map((sec) => {
             return <SeatCard key={sec.id} sectionData={sec} />;
           })}
         </div>
       )}
-      {showDetailSeatCart?.length !== 0 && !isLoading && (
+      {!isLoading && !isUserLoading && showDetailSeatCart?.length !== 0 && (
         <div className="flex flex-col gap-y-4 bg-neutral-800 px-4 py-6 rounded-three mb-3">
           <div className="flex items-center gap-x-2">
             <Chair />

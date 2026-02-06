@@ -29,9 +29,11 @@ const SeatStageMap = ({
 }) => {
   // const fakeUser = fakeUserId()!;
   const [auth, setAuth] = useState("");
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
   useEffect(() => {
     const fetchAuth = async () => {
+      setIsUserLoading(true);
       const fakeUser = await fakeUserId();
       const {
         data: { user },
@@ -41,6 +43,7 @@ const SeatStageMap = ({
       } else {
         setAuth(fakeUser!);
       }
+      setIsUserLoading(false);
     };
     fetchAuth();
 
@@ -102,8 +105,8 @@ const SeatStageMap = ({
         height: `${data.height}px`,
       }}
     >
-      {isLoading && <LoadingDot />}
-      {!isLoading && (
+      {isLoading && isUserLoading && <LoadingDot />}
+      {!isLoading && !isUserLoading && (
         <>
           <div
             className={`mx-auto ${data.stage?.shape ? "overflow-hidden rounded-t-full" : ""} absolute top-[${data.stage?.y || data.court?.y || 0}px] left-[${data.stage?.x || data.court?.x || 0}px]`}
@@ -135,6 +138,9 @@ const SeatStageMap = ({
                   const isSelectedByMe =
                     serverSeat?.status === "selected" &&
                     serverSeat?.user_id === auth;
+                  const isPaymentByMe =
+                    serverSeat?.status === "payment" &&
+                    serverSeat?.user_id === auth;
                   const isSelectedByOthers =
                     serverSeat?.status === "selected" &&
                     serverSeat?.user_id !== auth;
@@ -142,7 +148,7 @@ const SeatStageMap = ({
                   const handleSeatClick = () => {
                     if (isSold || isSelectedByOthers) return;
 
-                    if (isSelectedByMe) {
+                    if (isSelectedByMe || isPaymentByMe) {
                       deleteMutation.mutate(serverSeat.id!);
                     } else {
                       mutation.mutate({
@@ -174,8 +180,9 @@ const SeatStageMap = ({
                       <Seat
                         className={` transition-all duration-150 hover:fill-main/60
                     ${isSelectedByMe ? "fill-main" : ""} 
+                    ${isPaymentByMe ? "fill-success-400 pointer-events-none" : ""}
                     ${isSold ? "fill-neutral-300 pointer-events-none" : ""}
-                    ${!isSold && !isSelectedByMe && !isSelectedByOthers ? "fill-white cursor-pointer" : ""}
+                    ${!isSold && !isSelectedByMe && !isSelectedByOthers && !isPaymentByMe ? "fill-white cursor-pointer" : ""}
                     ${isSelectedByOthers ? "fill-warning-400 pointer-events-none" : ""}
                     ${mutation.isPending || deleteMutation.isPending ? "pointer-events-none opacity-50 animate-pulse" : ""}
                   `}

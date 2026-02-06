@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { mirgeSeatSelection } from "@/app/lib/actionServer";
 import { Lock, Logo, Messages, Pattern, User } from "../Ui/svg";
-import InputForm from "./components/InputForm";
+import InputForm from "./_components/InputForm";
 import { supabase } from "../lib/supabase";
 
 export default function LoginPage() {
@@ -53,6 +53,10 @@ export default function LoginPage() {
 
   return (
     <>
+      <div
+        onClick={() => router.back()}
+        className=" fixed top-10 left-10 cursor-pointer hover:text-main font-bold"
+      >{`< Back`}</div>
       <div className="w-full relative">
         <div className=" light_back absolute left-2/4 bg-main -translate-x-2/4  -translate-y-2/4 w-2/4" />
         <div className=" absolute -top-10 left-2/4 -translate-x-2/4 -translate-y-2/4">

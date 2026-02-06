@@ -1,5 +1,6 @@
 "use client";
 
+import { updateStatus } from "@/app/lib/actionServer";
 import { supabase } from "@/app/lib/supabase";
 import { SeatType, useSeatStor } from "@/app/lib/useSeatStor";
 import { Calendar, Clock, Location, Ticket } from "@/app/Ui/svg";
@@ -26,7 +27,8 @@ const ModalCart = ({
     e.preventDefault();
     const checkSignIn = await supabase.auth.getUser();
     if (checkSignIn.data.user?.id) {
-      route.push("/payment");
+      await updateStatus(checkSignIn.data.user?.id, "payment");
+      route.push("/payment?triggr=Tickets");
     } else {
       route.push("/signup");
     }

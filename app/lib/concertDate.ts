@@ -10,8 +10,11 @@ const concertDate = (data: string) => {
   const Year = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
   }).format(getDate);
+  const DayText = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+  }).format(getDate);
 
-  return [Year, Month, Day];
+  return [Year, Month, Day, DayText];
 };
 
 export default concertDate;

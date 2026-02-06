@@ -129,6 +129,10 @@ const page = async ({
               <span>You Selected</span>
             </div>
             <div className="flex items-center gap-x-4">
+              <Seat className=" fill-success-400" />
+              <span>You Payment</span>
+            </div>
+            <div className="flex items-center gap-x-4">
               <Seat className="  fill-warning-400" />
               <span>Pending</span>
             </div>

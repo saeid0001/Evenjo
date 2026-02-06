@@ -11,6 +11,7 @@ import {
   Events,
   Venues,
 } from "./types/event";
+import { SeatType } from "./useSeatStor";
 
 // ************* Festival *********
 export async function getFestivals(): Promise<Festivals> {
@@ -107,6 +108,23 @@ export async function getAllEventSeats() {
 
   return data;
 }
+export async function getAllEventSeatsByUserId(
+  userId: string,
+  statusSeat?: string,
+): Promise<SeatType[]> {
+  let query = supabase.from("event_seats").select("*");
+  if (statusSeat) {
+    query = query.eq("status", statusSeat);
+  }
+  const { data, error } = await query.eq("user_id", userId);
+
+  if (error) {
+    console.error("Error fetching AllEventSeats:", error);
+    return [];
+  }
+
+  return data;
+}
 
 export async function getCustomEvent(nameEvent: string) {
   const { data, error } = await supabase.from(nameEvent).select("*");
@@ -162,6 +180,23 @@ export async function getAllDataByNameTable(
 
   if (error) {
     console.error("Error fetching concerts:", error);
+    return [];
+  }
+
+  return data.map((row) => row);
+}
+
+export async function getDataByIdUserSeat(
+  name: string,
+  idPerform: string,
+): Promise<Concert[] | Show[] | Festival[] | Sport[]> {
+  const { data, error } = await supabase
+    .from(`${name}s`)
+    .select("*")
+    .eq(`${name}_id`, `${name}_${idPerform}`);
+
+  if (error) {
+    console.error("Error fetching getDataByIdUserSeat:", error);
     return [];
   }
 

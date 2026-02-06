@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export type SeatType = {
   id?: number;
+  created_at ?: string ;
   event_id: string;
   event_type: string;
   turn_number: number;
