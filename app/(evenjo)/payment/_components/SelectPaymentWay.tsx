@@ -16,7 +16,6 @@ const SelectPaymentWay = ({
     const value = e.target.value;
     setSelectedMethod(value);
   };
-  console.log(selectedMethod);
 
   return (
     <div>

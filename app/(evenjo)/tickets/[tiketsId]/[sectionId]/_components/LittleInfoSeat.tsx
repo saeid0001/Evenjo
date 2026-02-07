@@ -12,6 +12,7 @@ export const LittleInfoSeat = () => {
       return await getAllEventSeats();
     },
   });
+  
   const getFackUserId =
     typeof window !== "undefined"
       ? localStorage.getItem("guest_session_id")

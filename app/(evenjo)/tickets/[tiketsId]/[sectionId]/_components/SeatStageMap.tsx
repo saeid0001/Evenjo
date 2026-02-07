@@ -20,12 +20,14 @@ const SeatStageMap = ({
   turn,
   eventName,
   eventId,
+  prices
 }: {
   data: Venues;
   type: string;
   turn: string;
   eventName: string;
   eventId: string;
+  prices: number[]
 }) => {
   // const fakeUser = fakeUserId()!;
   const [auth, setAuth] = useState("");
@@ -84,7 +86,6 @@ const SeatStageMap = ({
 
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      console.log(id, "Thih");
 
       return await deleteDataFromSupabase(id, auth);
     },
@@ -122,7 +123,7 @@ const SeatStageMap = ({
             <div className=" light_back  mask-t-from-1 mask-b-from-1" />
           </div>
 
-          {data.sections.map((set) => {
+          {data.sections.map((set , indexSet) => {
             return (
               <div key={set.id}>
                 {set.seats.map((value) => {
@@ -160,7 +161,7 @@ const SeatStageMap = ({
                         row: value.row,
                         number: value.number,
                         status: "selected",
-                        price_paid: set.price,
+                        price_paid: prices[indexSet],
                         user_id: auth,
                         event_name: eventName,
                         section_name: set.name,
@@ -196,7 +197,7 @@ const SeatStageMap = ({
                         </div>
                         <div className="bg-neutral-900 p-2 flex justify-center flex-col items-center gap-y-3">
                           <span className=" text-main text-[22px] font-bold">
-                            ${set.price}
+                            ${prices[indexSet]}
                           </span>
                           <div className="flex justify-between gap-x-3">
                             <span className="whitespace-nowrap text-neutral-200">

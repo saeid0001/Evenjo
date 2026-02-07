@@ -112,7 +112,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
             alt={eventName}
             width={500}
             height={500}
-            className=" object-cover w-full h-100 rounded-three overflow-hidden"
+            className=" object-cover w-full h-100 rounded-three overflow-hidden "
           />
           <div className=" w-full h-37.5 mt-6 rounded-three overflow-hidden border">
             <Map

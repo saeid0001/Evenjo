@@ -22,7 +22,6 @@ const PaymentCard = async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log("user :", user);
 
   const getSeatUser = await getAllEventSeatsByUserId(user!.id);
 

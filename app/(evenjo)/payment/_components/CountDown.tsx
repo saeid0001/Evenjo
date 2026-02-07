@@ -32,7 +32,6 @@ const CountDown = () => {
         const initialRemaining = calculateRemaining();
         setSeconds(initialRemaining);
 
-        // راه اندازی اینتروال فقط بعد از گرفتن دیتا
         const timer = setInterval(() => {
           const rem = calculateRemaining();
           setSeconds(rem);
@@ -51,7 +50,7 @@ const CountDown = () => {
     };
 
     initTimer();
-  }, []); // حتما براکت خالی باشد تا فقط یک‌بار هنگام لود صفحه اجرا شود
+  }, []);
 
   const formatTimeArray = (secs: number) => {
     const minutes = Math.floor(secs / 60)

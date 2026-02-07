@@ -34,6 +34,7 @@ const page = async ({
   const getSection = tiketsData.turn.filter(
     (val) => val.turnnumbre === Number(turnnumbreId),
   );
+
   const nameHalls = getSection[0].halls.replaceAll(" ", "-");
 
   const getHalls = await getVenuesByID(nameHalls);
@@ -113,6 +114,7 @@ const page = async ({
               turn={turnnumbreId}
               eventName={eventName}
               eventId={idNumber}
+              prices={getSection[0].price}
             />
           </div>
           <div className=" my-8 px-6 py-3 rounded-three bg-neutral-1000 w-full flex justify-between items-center">
@@ -138,7 +140,7 @@ const page = async ({
             </div>
           </div>
         </div>
-        <div className=" col-span-4  w-full">
+        <div className="col-span-4 px-1 w-full h-screen overflow-y-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
           <SelectionManagerSeat
             getHalls={getHalls}
             type={performance}
@@ -151,6 +153,7 @@ const page = async ({
               month,
               day,
             }}
+            prices={getSection[0].price}
           />
         </div>
       </div>

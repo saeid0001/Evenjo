@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { Venues } from "@/app/lib/types/event";
 import SeatCard from "./SeatCard";
 import { useQueryEventSeats } from "@/app/hooks/useQueryEventSeats";
-import { Calendar, Chair, Clock, Ticket } from "@/app/Ui/svg";
+import { Calendar, Chair, Clock, Delete, Ticket } from "@/app/Ui/svg";
 import LoadingDot from "@/app/components/LoadingDot";
 import ModalCart from "./ModalCart";
 import { useSeatStor } from "@/app/lib/useSeatStor";
 import { supabase } from "@/app/lib/supabase";
+import { deleteAllSeatWithUserId } from "@/app/lib/actionServer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const SelectionManagerSeat = ({
   getHalls,
@@ -18,6 +20,7 @@ const SelectionManagerSeat = ({
   eventId,
   clock,
   date,
+  prices,
 }: {
   getHalls: Venues;
   type: string;
@@ -30,10 +33,12 @@ const SelectionManagerSeat = ({
     month: string;
     day: string;
   };
+  prices: number[];
 }) => {
   const [data, isLoading] = useQueryEventSeats();
   const [getUserId, setGetUserId] = useState("");
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const queryClient = useQueryClient();
   const popup = useSeatStor((state) => state.selectItem);
   const Toggle = useSeatStor((state) => state.setSelectItem);
 
@@ -100,18 +105,46 @@ const SelectionManagerSeat = ({
     {},
   );
 
+  const mutation = useMutation({
+    mutationFn: async () => {
+      return await deleteAllSeatWithUserId(
+        showDetailSeatCart![0].user_id!,
+        "selected",
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["eventSeats"] });
+    },
+    onError: (error) => {
+      console.log(error.message);
+      alert(error.message);
+    },
+  });
+
   return (
     <>
       {isLoading && isUserLoading && <LoadingDot />}
       {!isLoading && !isUserLoading && showDetailSeatCart?.length === 0 && (
         <div className="flex flex-col gap-y-4">
-          {getHalls.sections.map((sec) => {
-            return <SeatCard key={sec.id} sectionData={sec} />;
+          {getHalls.sections.map((sec, index) => {
+            return (
+              <SeatCard key={sec.id} sectionData={sec} prices={prices[index]} />
+            );
           })}
         </div>
       )}
       {!isLoading && !isUserLoading && showDetailSeatCart?.length !== 0 && (
         <div className="flex flex-col gap-y-4 bg-neutral-800 px-4 py-6 rounded-three mb-3">
+          <div className="flex justify-between items-center">
+            <span className=" text-warning-300">Delete All Seat</span>
+            <span
+              onClick={() => {
+                mutation.mutate();
+              }}
+            >
+              <Delete className=" stroke-amber-50 w-3 h-3 hover:stroke-warning-300 transition-all ease-in duration-150 cursor-pointer" />
+            </span>
+          </div>
           <div className="flex items-center gap-x-2">
             <Chair />
             <div className=" flex items-center gap-x-2 overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">

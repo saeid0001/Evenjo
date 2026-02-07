@@ -18,7 +18,7 @@ const ReviewCheck = ({
 
   const handelPaySeat = async () => {
     await updateStatus(user.id, "sold");
-    route.push("/");
+    route.push("/payment/success");
   };
 
   return (

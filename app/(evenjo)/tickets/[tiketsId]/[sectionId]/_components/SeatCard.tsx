@@ -3,7 +3,13 @@ import { sections } from "@/app/lib/types/event";
 import { Chair, Ticket } from "@/app/Ui/svg";
 import { useSearchParams } from "next/navigation";
 
-const SeatCard = ({ sectionData }: { sectionData: sections }) => {
+const SeatCard = ({
+  sectionData,
+  prices,
+}: {
+  sectionData: sections;
+  prices: number;
+}) => {
   const searchParams = useSearchParams();
   const getSeatFilter = searchParams.get("row");
 
@@ -40,7 +46,7 @@ const SeatCard = ({ sectionData }: { sectionData: sections }) => {
           </div>
         </div>
         <div className=" text-main">
-          <span className="text-[24px] font-bold">${sectionData.price}</span>
+          <span className="text-[24px] font-bold">${prices}</span>
           <span className="text-[14px]">/per</span>
         </div>
       </div>
