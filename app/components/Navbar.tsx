@@ -59,7 +59,11 @@ const Navbar = () => {
                 className="cursor-pointer text-[18px] hover:text-white transition-all ease-in duration-150"
                 key={val}
               >
-                <Link href={`/${val.toLowerCase()}`}>{val}</Link>
+                <Link
+                  href={`${val === "Home" ? `/${val.toLowerCase()}` : `/event/${val.toLowerCase()}`}`}
+                >
+                  {val}
+                </Link>
               </li>
             );
           })}

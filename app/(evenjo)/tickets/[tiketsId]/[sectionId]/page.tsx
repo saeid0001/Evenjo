@@ -107,7 +107,7 @@ const page = async ({
       </div>
       <div className=" grid grid-cols-12 gap-6 px-rl">
         <div className=" col-span-8 w-full h-fit px-4 ">
-          <div className="w-full overflow-x-auto overflow-y-visible [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
+          <div className="w-full overflow-x-auto overflow-y-visible px-20 -mx-0 pt-40 -mt-40 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
             <SeatStageMap
               data={getHalls}
               type={performance}

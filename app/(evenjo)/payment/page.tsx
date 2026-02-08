@@ -7,6 +7,7 @@ import SimpleBanner from "./_components/SimpleBanner";
 import TriggerButton from "./_components/TriggerButton";
 import SelectPaymentWay from "./_components/SelectPaymentWay";
 import ReviewCheck from "./_components/ReviewCheck";
+import Popup from "./_components/Popup";
 
 const page = async ({
   searchParams,
@@ -14,6 +15,7 @@ const page = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const supabase = await getSupabase();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -37,6 +39,7 @@ const page = async ({
   }
   return (
     <>
+      <Popup />
       <PaymentTrigger />
       <div className="grid grid-cols-12 justify-between px-rl py-20">
         <div className="col-span-5">

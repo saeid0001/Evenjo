@@ -20,14 +20,14 @@ const SeatStageMap = ({
   turn,
   eventName,
   eventId,
-  prices
+  prices,
 }: {
   data: Venues;
   type: string;
   turn: string;
   eventName: string;
   eventId: string;
-  prices: number[]
+  prices: number[];
 }) => {
   // const fakeUser = fakeUserId()!;
   const [auth, setAuth] = useState("");
@@ -86,7 +86,6 @@ const SeatStageMap = ({
 
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-
       return await deleteDataFromSupabase(id, auth);
     },
     onSuccess: () => {
@@ -116,14 +115,14 @@ const SeatStageMap = ({
               height: `${data.stage?.height || data.court?.height || 0}px`,
               top: `${data.stage?.y || data.court?.y || 0}px`,
               right: `${data.stage?.x || data.court?.x || 0}px`,
-              transform: `translate(${(data.stage?.width || data.court?.width || 0) / 2}px)`,
+              transform: `translate(${(data.stage?.width || data.court?.width || 0) / 2.15}px)`,
             }}
           >
             <Line className="z-50" />
             <div className=" light_back  mask-t-from-1 mask-b-from-1" />
           </div>
 
-          {data.sections.map((set , indexSet) => {
+          {data.sections.map((set, indexSet) => {
             return (
               <div key={set.id}>
                 {set.seats.map((value) => {
@@ -191,7 +190,7 @@ const SeatStageMap = ({
                       <div
                         className={`${value.id.includes(getSeatFilter) ? " bg-main blur-xl w-25 h-1 absolute right-4 translate-x-[50%]" : ""}`}
                       />
-                      <div className=" overflow-hidden z-5 rounded-two w-fit pointer-events-none absolute -top-[600%] -left-[80%] opacity-0 group-hover:opacity-100">
+                      <div className=" overflow-hidden z-5 rounded-two w-fit pointer-events-none absolute -top-[600%] -translate-x-[42%] translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all ease-in duration-150">
                         <div className="bg-neutral-700 p-2 flex justify-center">
                           <span className="whitespace-nowrap ">{set.name}</span>
                         </div>
@@ -217,6 +216,7 @@ const SeatStageMap = ({
                             </span>
                           </div>
                         </div>
+                        <div className="h-0 w-fit rounded-two mx-auto border-x-[1em] border-t-[0.7em] border-transparent border-t-neutral-900 -mt-[0.1em] -z-10"></div>
                       </div>
                     </div>
                   );

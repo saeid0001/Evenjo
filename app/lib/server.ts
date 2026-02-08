@@ -126,12 +126,48 @@ export async function getAllEventSeatsByUserId(
   return data;
 }
 
-export async function getCustomEvent(nameEvent: string) {
-  const { data, error } = await supabase.from(nameEvent).select("*");
+export async function getCustomEvent(nameEvent: string, page?: number) {
+  let query = supabase.from(nameEvent).select("*", { count: "exact" });
+
+  if (page) {
+    const ITEM_PRE_PAGE = 8;
+    const from = (page - 1) * ITEM_PRE_PAGE;
+    const to = from + ITEM_PRE_PAGE - 1;
+
+    // const now = new Date();
+    // const sevenDaysLater = new Date();
+    // sevenDaysLater.setDate(now.getDate() + 7);
+
+    // const formatDate = (date: Date) => {
+    //   const y = date.getFullYear();
+    //   const m = String(date.getMonth() + 1).padStart(2, "0");
+    //   const d = String(date.getDate()).padStart(2, "0");
+    //   return `${y}/${m}/${d}`;
+    // };
+
+    // const startDate = formatDate(now);
+    // const endDate = formatDate(sevenDaysLater);
+
+    query = query
+      .select("*")
+      .range(from, to)
+      // .eq("data->location->>name", "las vegas sphere")
+      // .gte("data->>dataconcert", startDate)
+      // .lte("data->>dataconcert", endDate)
+      .order("created_at", { ascending: false });
+  } else {
+    query = query.select("*");
+  }
+
+  const { data, count, error } = await query;
 
   if (error) {
     console.error("Error fetching Your Event:", error);
     return [];
+  }
+
+  if (page) {
+    return [data.map((row) => row), count];
   }
 
   return data.map((row) => row);
