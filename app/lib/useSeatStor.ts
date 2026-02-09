@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type SeatType = {
   id?: number;
-  created_at ?: string ;
+  created_at?: string;
   event_id: string;
   event_type: string;
   turn_number: number;
@@ -20,11 +20,15 @@ export type SeatType = {
 interface SeatStor {
   selectItem: boolean;
   setSelectItem: (value: boolean) => void;
+  popUpSeat: boolean;
+  setPopUp: (value: boolean) => void;
 }
 
 export const useSeatStor = create<SeatStor>((set) => {
   return {
     selectItem: false,
     setSelectItem: (value) => set({ selectItem: value }),
+    popUpSeat: false,
+    setPopUp: (value) => set({ popUpSeat: value }),
   };
 });

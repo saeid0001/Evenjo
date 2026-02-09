@@ -9,8 +9,9 @@ import { fakeUserId } from "@/app/lib/fakeUserId";
 import { supabase } from "@/app/lib/supabase";
 import { Venues } from "@/app/lib/types/event";
 import { SeatType } from "@/app/lib/useSeatStor";
-import { Line, Seat } from "@/app/Ui/svg";
+import { Delete, Line, Seat } from "@/app/Ui/svg";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -31,6 +32,11 @@ const SeatStageMap = ({
 }) => {
   // const fakeUser = fakeUserId()!;
   const [auth, setAuth] = useState("");
+  const [popUp, setPopUp] = useState({
+    status: false,
+    url: "",
+    del: "",
+  });
   const [isUserLoading, setIsUserLoading] = useState(true);
 
   useEffect(() => {
@@ -97,6 +103,14 @@ const SeatStageMap = ({
     },
   });
 
+  const handelClosePopUp = () => {
+    setPopUp({
+      status: false,
+      url: "",
+      del: "",
+    });
+  };
+
   return (
     <div
       className={` relative mx-auto p-2 `}
@@ -151,20 +165,44 @@ const SeatStageMap = ({
                     if (isSelectedByMe || isPaymentByMe) {
                       deleteMutation.mutate(serverSeat.id!);
                     } else {
-                      mutation.mutate({
-                        event_id: eventId,
-                        event_type: type,
-                        turn_number: Number(turn),
-                        seat_id: value.id,
-                        section_id: set.id,
-                        row: value.row,
-                        number: value.number,
-                        status: "selected",
-                        price_paid: prices[indexSet],
-                        user_id: auth,
-                        event_name: eventName,
-                        section_name: set.name,
-                      });
+                      const myReservedSeats = getAllSeatEvent?.filter(
+                        (val) =>
+                          val.user_id === auth &&
+                          (val.status === "selected" ||
+                            val.status === "payment"),
+                      );
+                      const hasConflict = myReservedSeats?.some(
+                        (seat) =>
+                          seat.event_id !== eventId ||
+                          seat.turn_number !== Number(turn),
+                      );
+                      const URLPATH = myReservedSeats?.find(
+                        (seat) =>
+                          seat.event_id !== eventId ||
+                          seat.turn_number !== Number(turn),
+                      );
+                      if (hasConflict) {
+                        setPopUp({
+                          status: true,
+                          url: `/tickets/${URLPATH?.event_name}_${URLPATH?.event_type}_${URLPATH?.event_id}/section_${URLPATH?.turn_number}`,
+                          del: `${URLPATH?.event_type} _ ${URLPATH?.event_name} _ Session ${URLPATH?.turn_number}`,
+                        });
+                      } else {
+                        mutation.mutate({
+                          event_id: eventId,
+                          event_type: type,
+                          turn_number: Number(turn),
+                          seat_id: value.id,
+                          section_id: set.id,
+                          row: value.row,
+                          number: value.number,
+                          status: "selected",
+                          price_paid: prices[indexSet],
+                          user_id: auth,
+                          event_name: eventName,
+                          section_name: set.name,
+                        });
+                      }
                     }
                   };
                   return (
@@ -224,6 +262,38 @@ const SeatStageMap = ({
               </div>
             );
           })}
+        </>
+      )}
+      {popUp.status && (
+        <>
+          <div
+            className=" bg-neutral-900/50 fixed inset-0 cursor-pointer"
+            onClick={() => handelClosePopUp()}
+          />
+          <div className=" fixed py-4 px-8 rounded-two top-10 right-2/4 translate-x-2/4 bg-warning-400">
+            <span
+              className="flex justify-end mb-4 w-full"
+              onClick={() => handelClosePopUp()}
+            >
+              <Delete className=" stroke-amber-50 hover:stroke-red-300 cursor-pointer transition-all ease-in duration-150" />
+            </span>
+            <div className=" flex flex-col items-center gap-5">
+              <span className=" font-medium text-[20px] text-center">
+                You have already selected another event, and reserved a seat in
+                that event. You will not be able to select another event until
+                you complete or cancel your reservation.
+              </span>
+              <span className=" text-main font-bold text-center text-[25px]">
+                {popUp.del}
+              </span>
+              <Link
+                href={popUp.url}
+                className=" bg-warning-300 hover:bg-warning-400 hover:border-warning-300 border transition-all ease-in duration-150 hover:text-warning-300 w-full text-center p-2 rounded-two text-warning-400 font-bold"
+              >
+                Go To Ticket Event
+              </Link>
+            </div>
+          </div>
         </>
       )}
     </div>
