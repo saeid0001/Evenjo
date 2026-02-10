@@ -57,11 +57,21 @@ export async function mirgeSeatSelection(
 
 export async function updateStatus(user: string, status: string) {
   const supabase = await getSupabase();
+  let query;
+  if (status === "payment") {
+    query = supabase
+      .from("event_seats")
+      .update({ status: status, created_at: new Date().toISOString() })
+      .eq("user_id", user)
+      .eq("status", "selected");
+  } else {
+    query = supabase
+      .from("event_seats")
+      .update({ status: status, created_at: new Date().toISOString() })
+      .eq("user_id", user);
+  }
 
-  const { error } = await supabase
-    .from("event_seats")
-    .update({ status, created_at: new Date().toISOString() })
-    .eq("user_id", user);
+  const { error } = await query;
 
   if (error) {
     console.error("Supabase Error:", error);

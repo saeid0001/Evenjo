@@ -98,7 +98,7 @@ const PaymentCard = async () => {
                       <span className="text-[20px] font-medium">Number :</span>
                       {num.map((n, index) => {
                         return (
-                          <span key={n} className="text-[20px] font-medium">
+                          <span key={index} className="text-[20px] font-medium">
                             {n}
                             {num.length > index + 1 && " - "}
                             {num.length === index + 1 && row.length < index && (

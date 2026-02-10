@@ -1,5 +1,6 @@
 "use client";
 import { IconTick, Pattern } from "@/app/Ui/svg";
+import Link from "next/link";
 
 const page = () => {
   return (
@@ -16,20 +17,18 @@ const page = () => {
           </span>
         </div>
         <div className=" flex gap-x-4 w-full">
-          <button
-            onClick={() => {
-              window.location.pathname = "/";
-            }}
-            className=" w-full border border-main px-4 py-3 transition-all duration-150 ease-in rounded-two cursor-pointer hover:bg-main/60"
+          <Link
+            href={"/"}
+            className=" w-full text-center border border-main px-4 py-3 transition-all duration-150 ease-in rounded-two cursor-pointer hover:bg-main/60"
           >
             Back to Home
-          </button>
-          <button
-            // onClick={handelPaySeat}
-            className=" w-full bg-main px-4 py-3 transition-all duration-150 ease-in rounded-two cursor-pointer hover:bg-main/60"
+          </Link>
+          <Link
+            href={"/profile"}
+            className=" w-full text-center bg-main px-4 py-3 transition-all duration-150 ease-in rounded-two cursor-pointer hover:bg-main/60"
           >
             Go To Profile
-          </button>
+          </Link>
         </div>
       </div>
     </div>

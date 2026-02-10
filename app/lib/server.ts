@@ -1,3 +1,4 @@
+import { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
 import {
   Concerts,
@@ -10,6 +11,7 @@ import {
   Sport,
   Events,
   Venues,
+  UserProfile,
 } from "./types/event";
 import { SeatType } from "./useSeatStor";
 
@@ -237,4 +239,23 @@ export async function getDataByIdUserSeat(
   }
 
   return data.map((row) => row);
+}
+
+// ****************** Profile User *****************
+
+export async function userProfile(
+  supabase: SupabaseClient,
+  id: string,
+): Promise<UserProfile> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching Tikets By ID:", error);
+  }
+
+  return data;
 }

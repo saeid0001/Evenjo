@@ -156,7 +156,8 @@ const SeatStageMap = ({
                     serverSeat?.status === "payment" &&
                     serverSeat?.user_id === auth;
                   const isSelectedByOthers =
-                    serverSeat?.status === "selected" &&
+                    (serverSeat?.status === "selected" ||
+                      serverSeat?.status === "payment") &&
                     serverSeat?.user_id !== auth;
 
                   const handleSeatClick = () => {
@@ -171,6 +172,8 @@ const SeatStageMap = ({
                           (val.status === "selected" ||
                             val.status === "payment"),
                       );
+                      console.log(myReservedSeats);
+
                       const hasConflict = myReservedSeats?.some(
                         (seat) =>
                           seat.event_id !== eventId ||

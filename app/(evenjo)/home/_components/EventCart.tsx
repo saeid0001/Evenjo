@@ -44,7 +44,7 @@ const EventCart = ({ value }: { value: Event }) => {
         />
       </div>
       <div className=" min-h-32 z-20 w-[90%] mx-auto -translate-y-10 bg-neutral-800 group-hover:bg-neutral-400 transition-all ease-in duration-150 border border-neutral-500 rounded-four flex flex-col p-4 gap-y-2 ">
-        <h3 className="text-[20px] font-bold line-clamp-1">{name}</h3>
+        <h3 className="text-[20px] font-bold line-clamp-1 capitalize ">{name}</h3>
         <div className=" flex justify-between gap-2">
           <div className="flex items-center gap-2">
             <Calendar className="w-3.5 h-3.5" />
@@ -53,8 +53,8 @@ const EventCart = ({ value }: { value: Event }) => {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Location className="w-3.5 h-3.5" />
-            <span className=" text-neutral-200 text-[14px] line-clamp-1">
+            <Location className="w-3.5 h-3.5 " />
+            <span className=" text-neutral-200 text-[14px] line-clamp-1 capitalize ">
               {value.data.location.name}
             </span>
           </div>

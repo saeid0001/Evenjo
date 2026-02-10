@@ -342,3 +342,19 @@ export interface Venues {
   sections: sections[];
   created_at: string;
 }
+
+// ***************** user Profile **********
+export interface UserProfile {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  avatar_url: string | null;
+  updated_at: string;
+  phone: string | null;
+  address: string | null;
+  national_id: string | null;
+  birth_date: string | null;
+  gender: "male" | "female" | "other" | null;
+  city: string | null;
+}

@@ -5,6 +5,7 @@ import { mirgeSeatSelection } from "@/app/lib/actionServer";
 import { Lock, Logo, Messages, Pattern, User } from "../Ui/svg";
 import InputForm from "./_components/InputForm";
 import { supabase } from "../lib/supabase";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -39,13 +40,14 @@ export default function LoginPage() {
     const { data, error } = choisAuth;
 
     if (error) {
-      alert("خطا در ثبت نام: " + error.message);
+      toast.error(`${error.message}`);
     } else {
       const fakeId = localStorage.getItem("guest_session_id");
       if (fakeId) {
         await mirgeSeatSelection(fakeId, data.user?.id);
         localStorage.removeItem("guest_session_id");
       }
+      toast.success(`Hello ${data.user?.user_metadata.name} , Wellcom Back`);
       router.back();
     }
     setLoading(false);
