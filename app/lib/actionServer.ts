@@ -2,6 +2,7 @@
 
 import { SeatType } from "./useSeatStor";
 import { getSupabase } from "./supabase-server";
+import { generateOrderIdentifiers } from "./generateOrderIdentifiers";
 
 export async function submitDataToSupabase(items: SeatType) {
   const supabase = await getSupabase();
@@ -57,6 +58,7 @@ export async function mirgeSeatSelection(
 
 export async function updateStatus(user: string, status: string) {
   const supabase = await getSupabase();
+  const { orderId, trackingCode } = generateOrderIdentifiers();
   let query;
   if (status === "payment") {
     query = supabase
@@ -67,8 +69,14 @@ export async function updateStatus(user: string, status: string) {
   } else {
     query = supabase
       .from("event_seats")
-      .update({ status: status, created_at: new Date().toISOString() })
-      .eq("user_id", user);
+      .update({
+        status: status,
+        created_at: new Date().toISOString(),
+        orderId,
+        trackingCode,
+      })
+      .eq("user_id", user)
+      .eq("status", "payment");
   }
 
   const { error } = await query;

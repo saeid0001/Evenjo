@@ -23,7 +23,7 @@ const PaymentCard = async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const getSeatUser = await getAllEventSeatsByUserId(user!.id);
+  const getSeatUser = await getAllEventSeatsByUserId(user!.id, "payment");
 
   const [id, type, turn] = [
     ...new Set(getSeatUser.map((val) => val.event_id)),
@@ -40,23 +40,20 @@ const PaymentCard = async () => {
   const locationEvent = getInformationEvent[0].data.location.name;
 
   const informationTickets = getSeatUser.reduce(
-    (acc: Record<string, { [cur.row]: number[] }>, cur) => {
-      if (!acc[cur.section_name]) {
-        acc[cur.section_name] = {
-          [cur.row]: [cur.number],
-        };
-      } else if (acc[cur.section_name][cur.row]) {
-        acc[cur.section_name][cur.row].push(cur.number);
-      } else if (!acc[cur.section_name][cur.row]) {
-        acc[cur.section_name] = {
-          ...acc[cur.section_name],
-          [cur.row]: [cur.number],
-        };
-      }
+    (acc: Record<string, Record<string, number[]>>, cur) => {
+      const section = cur.event_name;
+      const row = cur.row;
+
+      if (!acc[section]) acc[section] = {};
+      if (!acc[section][row]) acc[section][row] = [];
+
+      acc[section][row].push(cur.number);
       return acc;
     },
     {},
   );
+
+  console.log(informationTickets);
 
   return (
     <div>
@@ -79,40 +76,41 @@ const PaymentCard = async () => {
           <span className=" capitalize">{locationEvent}</span>
         </div>
         <div>
-          {Object.entries(informationTickets || {}).map(([key, val]) => {
-            return (
-              <div
-                key={key}
-                className=" flex gap-x-2 items-center flex-wrap gap-y-1"
-              >
-                <span className=" flex items-baseline gap-x-2 text-[20px] text-success-300 font-medium">
-                  {key} :{" "}
-                </span>
-                {Object.entries(val).map(([row, num]) => {
-                  return (
-                    <React.Fragment key={row}>
-                      <span className=" flex items-baseline gap-x-2 text-[20px] font-medium">
-                        Row : {row}{" "}
-                        <Ellipse className="fill-success-300" />{" "}
-                      </span>
-                      <span className="text-[20px] font-medium">Number :</span>
-                      {num.map((n, index) => {
-                        return (
-                          <span key={index} className="text-[20px] font-medium">
-                            {n}
-                            {num.length > index + 1 && " - "}
-                            {num.length === index + 1 && row.length < index && (
-                              <span className=" text-main"> / </span>
+          {Object.entries(informationTickets).map(([sectionName, rows]) => (
+            <div key={sectionName} className="flex flex-col gap-y-3">
+              <h3 className="text-success-300 text-xl font-semibold flex items-center gap-2">
+                {sectionName}
+              </h3>
+
+              <div className="flex flex-col gap-y-3 pl-4">
+                {Object.entries(rows).map(([rowName, numbers]) => (
+                  <div
+                    key={rowName}
+                    className="flex flex-wrap items-center gap-x-3 text-lg text-white"
+                  >
+                    <span className="flex items-center gap-x-2 text-neutral-100">
+                      Row: <strong className="text-white">{rowName}</strong>
+                      <Ellipse className="w-2 h-2 fill-success-300" />
+                    </span>
+
+                    <span className="text-neutral-100">Seats:</span>
+                    <div className="flex flex-wrap gap-x-1 font-mono text-main">
+                      {numbers
+                        .sort((a, b) => a - b)
+                        .map((n, idx) => (
+                          <React.Fragment key={idx}>
+                            <span>{n}</span>
+                            {idx < numbers.length - 1 && (
+                              <span className="text-neutral-100">,</span>
                             )}
-                          </span>
-                        );
-                      })}
-                    </React.Fragment>
-                  );
-                })}
+                          </React.Fragment>
+                        ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
         <div>
           <span>{getSeatUser.length} tickets</span>

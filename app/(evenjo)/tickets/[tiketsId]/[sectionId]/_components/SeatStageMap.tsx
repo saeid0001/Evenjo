@@ -25,7 +25,11 @@ const SeatStageMap = ({
 }: {
   data: Venues;
   type: string;
-  turn: string;
+  turn: {
+    turn: string;
+    clock: string;
+    date: string;
+  };
   eventName: string;
   eventId: string;
   prices: number[];
@@ -143,7 +147,7 @@ const SeatStageMap = ({
                   const serverSeat = getAllSeatEvent?.find(
                     (i) =>
                       i.seat_id === value.id &&
-                      i.turn_number === Number(turn) &&
+                      i.turn_number === Number(turn.turn) &&
                       i.event_name === eventName &&
                       i.event_id === eventId,
                   );
@@ -177,12 +181,12 @@ const SeatStageMap = ({
                       const hasConflict = myReservedSeats?.some(
                         (seat) =>
                           seat.event_id !== eventId ||
-                          seat.turn_number !== Number(turn),
+                          seat.turn_number !== Number(turn.turn),
                       );
                       const URLPATH = myReservedSeats?.find(
                         (seat) =>
                           seat.event_id !== eventId ||
-                          seat.turn_number !== Number(turn),
+                          seat.turn_number !== Number(turn.turn),
                       );
                       if (hasConflict) {
                         setPopUp({
@@ -194,7 +198,7 @@ const SeatStageMap = ({
                         mutation.mutate({
                           event_id: eventId,
                           event_type: type,
-                          turn_number: Number(turn),
+                          turn_number: Number(turn.turn),
                           seat_id: value.id,
                           section_id: set.id,
                           row: value.row,
@@ -204,6 +208,8 @@ const SeatStageMap = ({
                           user_id: auth,
                           event_name: eventName,
                           section_name: set.name,
+                          clock: turn.clock,
+                          date: turn.date,
                         });
                       }
                     }

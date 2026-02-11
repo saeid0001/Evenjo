@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 
 const NavBarDashbord = () => {
   const pathname = usePathname();
-  console.log(pathname);
-
   const menu = [
     {
       name: "Tickets",

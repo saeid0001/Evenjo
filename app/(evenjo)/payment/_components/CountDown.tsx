@@ -17,13 +17,11 @@ const CountDown = () => {
       if (!user) return;
 
       const getSeatUser = await getAllEventSeatsByUserId(user.id, "payment");
-      console.log(getSeatUser);
 
       if (getSeatUser.length > 0) {
         const createdAt = new Date(
           getSeatUser[getSeatUser.length - 1].created_at!,
         ).getTime();
-        console.log(createdAt);
 
         const tenMinutesInMs = 10 * 60 * 1000;
         const expiryTime = createdAt + tenMinutesInMs;

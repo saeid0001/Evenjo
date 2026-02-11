@@ -15,6 +15,10 @@ export type SeatType = {
   price_paid: number;
   event_name: string;
   section_name: string;
+  clock: string;
+  date: string;
+  trackingCode?: string;
+  orderId?: string;
 };
 
 interface SeatStor {

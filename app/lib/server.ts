@@ -259,3 +259,17 @@ export async function userProfile(
 
   return data;
 }
+
+export async function userTicketByOrderId(orderId: string) {
+  const { data, error } = await supabase
+    .from("event_seats")
+    .select("*")
+    .eq("orderId", orderId);
+
+  if (error) {
+    console.error("Error fetching AllEventSeats:", error);
+    return [];
+  }
+
+  return data;
+}
