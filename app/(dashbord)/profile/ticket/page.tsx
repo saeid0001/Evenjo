@@ -22,7 +22,7 @@ export interface TiketType {
   };
 }
 
-interface GroupedTickets {
+export interface GroupedTickets {
   [key: string]: TiketType;
 }
 

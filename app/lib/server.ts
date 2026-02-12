@@ -260,7 +260,9 @@ export async function userProfile(
   return data;
 }
 
-export async function userTicketByOrderId(orderId: string) {
+export async function userTicketByOrderId(
+  orderId: string,
+): Promise<SeatType[]> {
   const { data, error } = await supabase
     .from("event_seats")
     .select("*")
