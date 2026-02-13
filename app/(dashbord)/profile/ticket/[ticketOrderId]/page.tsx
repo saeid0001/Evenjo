@@ -1,16 +1,10 @@
 import concertDate from "@/app/lib/concertDate";
 import { getDataByIdUserSeat, userTicketByOrderId } from "@/app/lib/server";
 import { getEventImage } from "@/app/lib/types/event";
-import {
-  ArrowAction,
-  Calendar,
-  Chair,
-  Ellipse,
-  Location,
-  Seat,
-} from "@/app/Ui/svg";
+import { Calendar, Chair, Ellipse, Location } from "@/app/Ui/svg";
 import Image from "next/image";
 import React from "react";
+import TicketPDFDownloader from "../_components/TicketPDFDownloader";
 
 const page = async ({
   params,
@@ -29,7 +23,7 @@ const page = async ({
   const eventType = ticket[0].event_type;
   const eventName = ticket[0].event_name;
   const [, Month, Day, DayText] = concertDate(
-    String(new Date(ticket[0].created_at!).getDate()),
+    String(new Date(ticket[0].created_at!).toISOString()),
   );
   const clock = ticket[0].clock;
   const clockCreateAy = `${new Date(ticket[0].created_at!).getHours()}:${new Date(ticket[0].created_at!).getMinutes().toString().padStart(2, "0")}`;
@@ -51,7 +45,27 @@ const page = async ({
   const totalPrice = ticket.reduce((acc, item) => acc + item.price_paid, 0);
   const transactionID = ticket[0].trackingCode;
 
-  console.log(transactionID);
+  const qrContent = `
+EVENT: ${eventName.toUpperCase()}
+TRACKING CODE: ${transactionID}
+--------------------------
+SEATS:
+${Object.entries(informationTickets)
+  .map(([section, rows]) =>
+    Object.entries(rows)
+      .map(
+        ([row, nums]) =>
+          `${section} | Row ${row} | Seats: ${nums.sort((a, b) => a - b).join(", ")}`,
+      )
+      .join("\n"),
+  )
+  .join("\n")}
+--------------------------
+TOTAL PAID: $${(totalPrice + 100).toLocaleString()}
+ORDER DATE: ${DayText} ${Day} ${Month}
+`.trim();
+
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrContent)}&bgcolor=28-28-28&color=c14fe6`;
 
   return (
     <div className=" flex flex-col gap-y-8">
@@ -74,10 +88,18 @@ const page = async ({
             <span className=" text-[24px] font-bold text-main">
               Order Details
             </span>
-            <button className=" text-main border border-main flex  items-center gap-x-2 cursor-pointer px-4 py-2 rounded-two">
-              <ArrowAction />
-              Download ticket
-            </button>
+            <TicketPDFDownloader
+              eventName={eventName}
+              imageEvent={imageEvent[1] || ""}
+              location={locationEvent}
+              eventDate={`${MonthDate} ${DayDate} ${DayTextDate}`}
+              clock={clock}
+              trackingCode={transactionID!}
+              orderDate={`${DayText} ${Day} ${Month} - ${clockCreateAy}`}
+              ticketCount={ticketCount}
+              totalPrice={totalPrice}
+              informationTickets={informationTickets}
+            />
           </div>
           <div className=" flex justify-between items-center">
             <div className="flex flex-col gap-y-2">
@@ -171,7 +193,7 @@ const page = async ({
           </span>
           <span className=" w-full h-px bg-neutral-500" />
         </div>
-        <div className=" flex justify-between w-full">
+        <div className=" flex justify-between items-center w-full">
           <div className="flex flex-col gap-y-10">
             <div className="flex flex-col gap-y-2">
               <span className=" text-[18px] font-medium">Ticket count</span>
@@ -209,7 +231,11 @@ const page = async ({
             </div>
           </div>
           <span className=" w-10 h-full bg-neutral-300" />
-          <div>QR Code</div>
+          <div className="flex flex-col items-center gap-y-3">
+            <div className="p-2 rounded-two">
+              <img src={qrImageUrl} alt="QR" className="w-full rounded-three" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
