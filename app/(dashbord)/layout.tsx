@@ -12,7 +12,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className=" col-span-11 flex flex-col gap-y-6">
             <Header />
-            <div className=" w-full min-h-[calc(100vh-136px)] max-h-screen overflow-y-auto bg-neutral-800 rounded-three px-6 py-4">
+            <div className=" w-full min-h-[calc(100vh-130px)] max-h-screen  ">
               {children}
             </div>
           </div>

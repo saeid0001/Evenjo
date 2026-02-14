@@ -3,6 +3,7 @@
 import { SeatType } from "./useSeatStor";
 import { getSupabase } from "./supabase-server";
 import { generateOrderIdentifiers } from "./generateOrderIdentifiers";
+import { UserProfile } from "./types/event";
 
 export async function submitDataToSupabase(items: SeatType) {
   const supabase = await getSupabase();
@@ -84,6 +85,23 @@ export async function updateStatus(user: string, status: string) {
   if (error) {
     console.error("Supabase Error:", error);
     throw new Error(`خطا در به‌روزرسانی وضعیت : ${error}`);
+  }
+
+  return { success: true };
+}
+export async function updateProfileUser(idUser: string, formInfo: UserProfile) {
+  const supabase = await getSupabase();
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      ...formInfo,
+    })
+    .eq("id", idUser);
+
+  if (error) {
+    console.error("Supabase Error:", error);
+    throw new Error(`خطا در به‌روزرسانی پروفایل : ${error}`);
   }
 
   return { success: true };

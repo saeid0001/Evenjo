@@ -55,7 +55,7 @@ const page = async ({
         <div
           className="absolute -translate-y-18 inset-0 mask-t-from-80% mask-b-from-50% -z-20 bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(${eventImage[0]})`,
+            backgroundImage: `url(${eventImage[1]})`,
           }}
         />
         <div

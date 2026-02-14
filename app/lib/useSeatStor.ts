@@ -26,6 +26,8 @@ interface SeatStor {
   setSelectItem: (value: boolean) => void;
   popUpSeat: boolean;
   setPopUp: (value: boolean) => void;
+  editeProfile: boolean;
+  setEditeProfile: (value: boolean) => void;
 }
 
 export const useSeatStor = create<SeatStor>((set) => {
@@ -34,5 +36,7 @@ export const useSeatStor = create<SeatStor>((set) => {
     setSelectItem: (value) => set({ selectItem: value }),
     popUpSeat: false,
     setPopUp: (value) => set({ popUpSeat: value }),
+    editeProfile: false,
+    setEditeProfile: (value) => set({ editeProfile: value }),
   };
 });

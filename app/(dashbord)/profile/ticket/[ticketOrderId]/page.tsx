@@ -68,7 +68,7 @@ ORDER DATE: ${DayText} ${Day} ${Month}
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrContent)}&bgcolor=28-28-28&color=c14fe6`;
 
   return (
-    <div className=" flex flex-col gap-y-8">
+    <div className=" flex flex-col gap-y-8 h-full bg-neutral-800 rounded-three px-6 py-4 overflow-y-auto">
       <div className=" flex gap-x-10">
         <div className="w-[25%] flex flex-col items-center gap-y-2">
           <div className=" relative w-full h-50">
@@ -204,7 +204,7 @@ ORDER DATE: ${DayText} ${Day} ${Month}
               <span className=" text-neutral-100">Negar khosravi</span>
             </div>
           </div>
-          <span className=" w-10 h-full bg-neutral-300" />
+          <span className="w-px h-full bg-neutral-300" />
           <div className="flex flex-col gap-y-10">
             <div className="flex flex-col gap-y-2">
               <span className=" text-[18px] font-medium">
@@ -217,7 +217,7 @@ ORDER DATE: ${DayText} ${Day} ${Month}
               <span className=" text-neutral-100">Stripe</span>
             </div>
           </div>
-          <span className=" w-1 h-full bg-neutral-100" />
+          <span className=" w-px h-full bg-neutral-300" />
           <div className="flex flex-col gap-y-10">
             <div className="flex flex-col gap-y-2">
               <span className=" text-[18px] font-medium">Total paid</span>
@@ -230,7 +230,7 @@ ORDER DATE: ${DayText} ${Day} ${Month}
               <span className=" text-neutral-100">{transactionID}</span>
             </div>
           </div>
-          <span className=" w-10 h-full bg-neutral-300" />
+          <span className=" w-px h-full bg-neutral-300" />
           <div className="flex flex-col items-center gap-y-3">
             <div className="p-2 rounded-two">
               <img src={qrImageUrl} alt="QR" className="w-full rounded-three" />

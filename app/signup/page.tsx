@@ -31,8 +31,8 @@ export default function LoginPage() {
         password,
         options: {
           data: {
-            full_name: fname,
-            name: name,
+            last_name: fname,
+            first_name: name,
           },
         },
       });
@@ -47,7 +47,7 @@ export default function LoginPage() {
         await mirgeSeatSelection(fakeId, data.user?.id);
         localStorage.removeItem("guest_session_id");
       }
-      toast.success(`Hello ${data.user?.user_metadata.name} , Wellcom Back`);
+      toast.success(`Hello ${data.user?.user_metadata.first_name} , Wellcom Back`);
       router.back();
     }
     setLoading(false);
@@ -79,6 +79,7 @@ export default function LoginPage() {
                 type="text"
                 placeholder="Enter Name"
                 label="Name"
+                valueDefult={name}
               />
               <InputForm
                 inputFild={setFname}
@@ -86,6 +87,7 @@ export default function LoginPage() {
                 type="text"
                 placeholder="Enter Last Name"
                 label="Last Name"
+                valueDefult={fname}
               />
             </div>
           )}
@@ -96,6 +98,7 @@ export default function LoginPage() {
             type="email"
             placeholder="Enter Email"
             label="Email"
+            valueDefult={email}
           />
           <InputForm
             inputFild={setPassword}
@@ -103,6 +106,7 @@ export default function LoginPage() {
             type="password"
             placeholder="Enter Password"
             label="Password"
+            valueDefult={password}
           />
 
           <button

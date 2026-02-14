@@ -32,7 +32,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
         <div
           className="absolute inset-0 mask-t-from-80% mask-b-from-50% -z-20 bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(${eventImage[0]})`,
+            backgroundImage: `url(${eventImage[1]})`,
             top: "-30%",
           }}
         />
@@ -108,7 +108,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
 
         <div className=" h-fit w-full col-span-3 sticky top-25 -translate-y-20 text-transparent ">
           <Image
-            src={eventImage[1]}
+            src={eventImage[0]}
             alt={eventName}
             width={500}
             height={500}

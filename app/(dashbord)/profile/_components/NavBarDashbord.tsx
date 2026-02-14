@@ -25,9 +25,12 @@ const NavBarDashbord = () => {
   ];
   return (
     <div className=" flex flex-col gap-y-8">
-      <div className=" flex items-center justify-center w-full pt-4">
+      <Link
+        href={"/"}
+        className=" flex items-center justify-center w-full pt-4"
+      >
         <Logo className=" fill-main w-[50%] h-auto" />
-      </div>
+      </Link>
       <hr className=" text-neutral-700" />
       <div className="flex flex-col gap-y-2 items-strat">
         {menu.map((val) => {

@@ -6,8 +6,6 @@ import Image from "next/image";
 const Header = async () => {
   const { avatar_url } = await profileAuth();
 
-  console.log(avatar_url);
-
   return (
     <div className=" bg-neutral-800 w-full px-6 py-4 rounded-three flex items-center justify-between">
       <div className=" relative w-[40%]">
@@ -27,8 +25,9 @@ const Header = async () => {
           <Image
             alt=""
             fill
+            unoptimized
             className=" rounded-full object-fit"
-            src={`${avatar_url === null ? "/avatar.png" : avatar_url}`}
+            src={`${avatar_url || "/avatar.png"}`}
           />
         </div>
       </div>

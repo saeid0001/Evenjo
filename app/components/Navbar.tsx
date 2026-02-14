@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import LoadingDot from "./LoadingDot";
+import { useRouter } from "next/navigation";
 
 const menu = ["Home", "Shows", "Concerts", "Sports", "Festivals"];
 
 const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,9 +43,10 @@ const Navbar = () => {
   }, []);
 
   const handelSingOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    window.location.reload();
+    // await supabase.auth.signOut();
+    // setUser(null);
+    // window.location.reload();
+    router.push("/profile/ticket")
   };
 
   return (
@@ -90,7 +93,7 @@ const Navbar = () => {
                 onClick={() => handelSingOut()}
                 className=" rounded-two cursor-pointer transition-all ease-in duration-150 bg-main text-white border border-main py-1.25 px-4"
               >
-                {user.user_metadata.name}
+                {user.user_metadata.first_name}
               </span>
             </div>
           ) : (

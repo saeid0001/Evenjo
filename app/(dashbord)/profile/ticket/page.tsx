@@ -99,7 +99,7 @@ const page = async ({
     <>
       {Object.entries(allTicketsGrouped).length === 0 && <NoTicket />}
       {Object.entries(allTicketsGrouped).length !== 0 && (
-        <div className="flex flex-col gap-y-4 justify-between h-full">
+        <div className="flex flex-col gap-y-4 justify-between h-full bg-neutral-800 rounded-three px-6 py-4 overflow-y-auto ">
           <div className=" flex flex-col gap-y-4">
             <div className="flex gap-x-2">
               {statusFilter.map((val) => {

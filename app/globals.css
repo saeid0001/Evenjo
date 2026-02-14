@@ -117,3 +117,35 @@
 .custom-radio:focus {
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
+
+.react-datepicker__header {
+  @apply bg-neutral-900! border-neutral-700! pt-4!;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day {
+  @apply text-neutral-200!;
+}
+
+.react-datepicker__day--selected {
+  @apply bg-main! text-white! rounded-lg!;
+}
+
+.react-datepicker__day--keyboard-selected {
+  @apply bg-main/30! text-white! rounded-lg!;
+}
+
+.react-datepicker__navigation-icon::before {
+  @apply border-neutral-400!;
+}
+
+.react-datepicker__year-select,
+.react-datepicker__month-select {
+  @apply bg-neutral-800! text-neutral-100! border-none! outline-none! rounded-md! p-1! cursor-pointer!;
+}
+.react-datepicker-wrapper{
+  @apply w-full!
+}
+
+
