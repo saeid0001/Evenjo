@@ -41,27 +41,43 @@ const page = async ({
     <>
       <Popup />
       <PaymentTrigger />
-      <div className="grid grid-cols-12 justify-between px-rl py-20">
-        <div className="col-span-5">
+
+      <div className="grid grid-cols-12 gap-y-10 md:gap-x-6 lg:gap-x-12 px-6 md:px-rl py-10 md:py-20">
+        <div className="col-span-12 lg:col-span-5 order-2 lg:order-1">
           <PaymentCard />
         </div>
-        <div className="col-span-6 col-start-7 flex flex-col gap-y-10">
+
+        <div className="col-span-12 lg:col-span-6 lg:col-start-7 flex flex-col gap-y-6 md:gap-y-10 order-1 lg:order-2">
           <CountDown />
-          {tiggr === "Tickets" && (
-            <span>
-              Make sure the number of tickets is correct before proceeding.{" "}
-            </span>
+
+          <div className="min-h-12.5">
+            {tiggr === "Tickets" && (
+              <span className="text-sm md:text-base text-neutral-300 block leading-relaxed">
+                Make sure the number of tickets is correct before proceeding.
+              </span>
+            )}
+
+            {tiggr === "Payment" && (
+              <SelectPaymentWay
+                totalPrice={totalPrice}
+                ServicePrice={ServicePrice}
+              />
+            )}
+
+            {tiggr === "Review" && (
+              <ReviewCheck
+                user={user!}
+                totalPrice={totalPrice + ServicePrice}
+              />
+            )}
+          </div>
+
+          {tiggr !== "Review" && (
+            <div className="w-full">
+              <TriggerButton />
+            </div>
           )}
-          {tiggr === "Payment" && (
-            <SelectPaymentWay
-              totalPrice={totalPrice}
-              ServicePrice={ServicePrice}
-            />
-          )}
-          {tiggr === "Review" && (
-            <ReviewCheck user={user!} totalPrice={totalPrice + ServicePrice} />
-          )}
-          {tiggr !== "Review" && <TriggerButton />}
+
           <SimpleBanner />
         </div>
       </div>

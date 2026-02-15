@@ -67,36 +67,38 @@ const CountDown = () => {
   const timeDigits = formatTimeArray(seconds);
 
   return (
-    <div className="flex items-center gap-x-4">
-      <div className="flex items-center gap-x-2 direction-ltr">
-        <div className="flex gap-x-1">
-          <span className=" bg-gradient-warm px-4 py-2 rounded-two font-bold border border-neutral-700 ">
-            {timeDigits[0]}
-          </span>
-          <span className="bg-gradient-warm px-4 py-2 rounded-two font-bold border border-neutral-700 ">
-            {timeDigits[1]}
-          </span>
-        </div>
-        <span className="font-bold text-xl">:</span>
-
-        <div className="flex gap-x-1">
-          <span className="bg-gradient-warm px-4 py-2 rounded-two font-bold border border-neutral-700 ">
-            {timeDigits[2]}
-          </span>
-          <span className="bg-gradient-warm px-4 py-2 rounded-two font-bold border border-neutral-700  ">
-            {timeDigits[3]}
-          </span>
-        </div>
-      </div>
-      <div className=" flex flex-col">
-        <span className=" text-neutral-100">
-          left to complete recive ticket
-        </span>
-        <span className=" text-neutral-200">
-          Your price is only guaranteed for this time!
-        </span>
-      </div>
+    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-x-4">
+  <div className="flex items-center gap-x-2 direction-ltr shrink-0">
+    <div className="flex gap-x-1">
+      <span className="bg-gradient-warm px-3 py-2 md:px-4 md:py-2 rounded-two font-bold border border-neutral-700 text-sm md:text-base">
+        {timeDigits[0]}
+      </span>
+      <span className="bg-gradient-warm px-3 py-2 md:px-4 md:py-2 rounded-two font-bold border border-neutral-700 text-sm md:text-base">
+        {timeDigits[1]}
+      </span>
     </div>
+    
+    <span className="font-bold text-lg md:text-xl">:</span>
+
+    <div className="flex gap-x-1">
+      <span className="bg-gradient-warm px-3 py-2 md:px-4 md:py-2 rounded-two font-bold border border-neutral-700 text-sm md:text-base">
+        {timeDigits[2]}
+      </span>
+      <span className="bg-gradient-warm px-3 py-2 md:px-4 md:py-2 rounded-two font-bold border border-neutral-700 text-sm md:text-base">
+        {timeDigits[3]}
+      </span>
+    </div>
+  </div>
+
+  <div className="flex flex-col text-center md:text-left">
+    <span className="text-neutral-100 text-sm md:text-base">
+      left to complete receive ticket
+    </span>
+    <span className="text-neutral-200 text-xs md:text-sm">
+      Your price is only guaranteed for this time!
+    </span>
+  </div>
+</div>
   );
 };
 

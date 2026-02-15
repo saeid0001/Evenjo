@@ -52,17 +52,19 @@ const EventsSection = <T extends DataEvents>({
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-4 lg:px-0">
       <div className="flex items-center justify-between pb-2 border-b border-neutral-700">
-        <span className=" text-[28px] font-semibold">{title}</span>
+        <span className="text-[20px] lg:text-[28px] font-semibold">
+          {title}
+        </span>
         <Link
           href={`/event/${eventType}s`}
-          className="text-[16px] hover:text-tint-400 transition-all ease-in duration-150"
+          className="text-[14px] lg:text-[16px] hover:text-tint-400 transition-all ease-in duration-150"
         >
           See all
         </Link>
       </div>
-      <div className="flex gap-2 my-4">
+      <div className="flex gap-2 my-4 overflow-x-auto no-scrollbar pb-2">
         {data &&
           getAllCategory?.map((cat) => {
             return (
@@ -79,14 +81,14 @@ const EventsSection = <T extends DataEvents>({
                   searchParams.get(eventType) === cat
                     ? " text-tint-400 bg-gradient-cool border-tint-400"
                     : ""
-                }  bg-neutral-500 hover:text-tint-400 text-neutral-100 cursor-pointer hover:bg-gradient-cool hover:border-tint-400 border rounded-four px-4 py-2 border-neutral-400 transition-all ease-in duration-150`}
+                } whitespace-nowrap bg-neutral-500 hover:text-tint-400 text-neutral-100 cursor-pointer hover:bg-gradient-cool hover:border-tint-400 border rounded-four px-4 py-2 border-neutral-400 transition-all ease-in duration-150 text-sm lg:text-base`}
               >
                 {cat}
               </button>
             );
           })}
       </div>
-      <div className="flex justify-between gap-4 py-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:  lg:grid-cols-4 gap-4 py-4">
         {isLoading && <LoadingDot />}
 
         {!isLoading &&

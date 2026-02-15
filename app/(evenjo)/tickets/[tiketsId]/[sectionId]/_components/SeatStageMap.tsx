@@ -192,7 +192,7 @@ const SeatStageMap = ({
                         setPopUp({
                           status: true,
                           url: `/tickets/${URLPATH?.event_name}_${URLPATH?.event_type}_${URLPATH?.event_id}/section_${URLPATH?.turn_number}`,
-                          del: `${URLPATH?.event_type} _ ${URLPATH?.event_name} _ Session ${URLPATH?.turn_number}`,
+                          del: `${URLPATH?.event_type} , ${URLPATH?.event_name} , Session ${URLPATH?.turn_number}`,
                         });
                       } else {
                         mutation.mutate({
@@ -276,31 +276,46 @@ const SeatStageMap = ({
       {popUp.status && (
         <>
           <div
-            className=" bg-neutral-900/50 fixed inset-0 cursor-pointer"
+            className="bg-black/60 backdrop-blur-sm fixed inset-0 z-[100] cursor-pointer"
             onClick={() => handelClosePopUp()}
           />
-          <div className=" fixed py-4 px-8 rounded-two top-10 right-2/4 translate-x-2/4 bg-warning-400">
-            <span
-              className="flex justify-end mb-4 w-full"
+
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[500px] z-[101] bg-neutral-800 border border-neutral-700 p-6 md:p-8 rounded-three shadow-2xl animate-in fade-in zoom-in duration-300">
+            <div
               onClick={() => handelClosePopUp()}
+              className="flex justify-end absolute top-4 right-4"
             >
-              <Delete className=" stroke-amber-50 hover:stroke-red-300 cursor-pointer transition-all ease-in duration-150" />
-            </span>
-            <div className=" flex flex-col items-center gap-5">
-              <span className=" font-medium text-[20px] text-center">
-                You have already selected another event, and reserved a seat in
-                that event. You will not be able to select another event until
-                you complete or cancel your reservation.
+              <Delete className="stroke-neutral-400 hover:stroke-red-500 cursor-pointer transition-colors" />
+            </div>
+
+            <div className="flex flex-col items-center gap-y-6 mt-4">
+              <div className="w-16 h-16 rounded-full bg-main/10 flex items-center justify-center">
+                <span className="text-main text-3xl font-bold">!</span>
+              </div>
+
+              <span className="font-medium text-[16px] md:text-[18px] text-neutral-100 text-center leading-relaxed">
+                You have already selected another event and reserved a seat. You
+                cannot select a new event until you complete or cancel your
+                current reservation.
               </span>
-              <span className=" text-main font-bold text-center text-[25px]">
+
+              <span className="text-main capitalize font-bold text-center text-[20px] md:text-[24px] px-4 py-2 bg-main/5 rounded-lg border border-main/10 w-full">
                 {popUp.del}
               </span>
+
               <Link
                 href={popUp.url}
-                className=" bg-warning-300 hover:bg-warning-400 hover:border-warning-300 border transition-all ease-in duration-150 hover:text-warning-300 w-full text-center p-2 rounded-two text-warning-400 font-bold"
+                className="bg-main hover:bg-main/90 active:scale-[0.98] text-white w-full text-center py-3.5 rounded-two font-bold transition-all shadow-lg shadow-main/20"
               >
                 Go To Ticket Event
               </Link>
+
+              <button
+                onClick={() => handelClosePopUp()}
+                className="text-neutral-400 text-sm font-medium hover:text-white transition-colors md:hidden"
+              >
+                Dismiss
+              </button>
             </div>
           </div>
         </>

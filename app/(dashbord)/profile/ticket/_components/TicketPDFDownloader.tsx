@@ -266,18 +266,22 @@ export default function TicketPDFDownloader({
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full md:w-auto">
       <button
         onClick={generatePDF}
         disabled={loading}
-        className=" text-main border border-main px-10 py-3.5 rounded-three cursor-pointer font-bold shadow-lg hover:shadow-main/40 transition-all disabled:opacity-50"
+        className="w-full md:w-auto text-main border border-main px-6 md:px-10 py-3 md:py-3.5 rounded-three cursor-pointer font-bold shadow-lg hover:shadow-main/40 active:scale-[0.98] transition-all disabled:opacity-50"
       >
-        <span className="flex items-center gap-3">
-          <ArrowAction /> {loading ? "PROCESSING..." : "DOWNLOAD TICKET"}
+        <span className="flex items-center justify-center gap-2 md:gap-3 whitespace-nowrap text-sm md:text-base">
+          <ArrowAction />
+          {loading ? "PROCESSING..." : "DOWNLOAD TICKET"}
         </span>
       </button>
+
       {errorMsg && (
-        <p className="text-red-400 mt-4 text-xs font-bold">{errorMsg}</p>
+        <p className="text-red-400 mt-3 md:mt-4 text-[10px] md:text-xs font-bold text-center">
+          {errorMsg}
+        </p>
       )}
     </div>
   );

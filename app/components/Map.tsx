@@ -2,7 +2,7 @@
 
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet"; // اضافه کردن leaflet برای استفاده از آیکون
+import L from "leaflet"; 
 
 const Map = ({
   lat,
@@ -13,12 +13,11 @@ const Map = ({
   lon: number;
   name: string;
 }) => {
-  // آیکون شخصی رو می‌سازیم
   const customIcon = new L.Icon({
-    iconUrl: "/locationicon5.png", // مسیر آیکون شما
-    iconSize: [80, 80], // اندازه آیکون
-    iconAnchor: [16, 32], // نقطه‌ای که باید موقعیت مارکر در نظر گرفته بشه
-    popupAnchor: [0, -32], // موقعیت پنجره پاپ آپ نسبت به آیکون
+    iconUrl: "/locationicon5.png", 
+    iconSize: [80, 80],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
   });
 
   return (

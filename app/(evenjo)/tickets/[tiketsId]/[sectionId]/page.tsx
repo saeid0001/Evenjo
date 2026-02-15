@@ -53,46 +53,48 @@ const page = async ({
     <>
       <div className="relative h-auto">
         <div
-          className="absolute -translate-y-18 inset-0 mask-t-from-80% mask-b-from-50% -z-20 bg-cover bg-no-repeat"
+          className="absolute inset-0 mask-t-from-80% mask-b-from-50% -z-20 bg-cover bg-no-repeat opacity-50 lg:opacity-100"
           style={{
             backgroundImage: `url(${eventImage[1]})`,
+            top: "-30%",
           }}
         />
-        <div
-          className={`w-[60%] px-rl py-25 flex ml-auto flex-col items-left justify-center`}
-        >
-          <div className="w-full flex justify-between items-center mb-8">
-            <span className=" text-[48px] font-bold tracking-widest">
+        <div className="w-full lg:w-[60%] px-8 lg:px-rl py-12 lg:py-25 flex lg:ml-auto flex-col justify-center">
+          <div className="w-full flex flex-col sm:flex-row justify-between items-center sm:items-center mb-8 gap-y-4">
+            <span className="text-[28px] md:text-[40px] lg:text-[48px] font-bold tracking-widest leading-tight">
               {eventName.toUpperCase()}
             </span>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center self-end sm:self-auto">
               <Like />
               <Share />
             </div>
           </div>
-          <div className=" w-full flex justify-between items-center">
+
+          <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-y-6">
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-2">
-                <Calendar className="w-5.25 h-5.25" />
-                <span className=" text-[18px] text-neutral-100">
+                <Calendar className="w-5.25 h-5.25 text-tint-400 fill-neutral-200" />
+                <span className="text-sm md:text-[18px] text-neutral-100">
                   {`${month} ${day} - ${year}`}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Location className="w-5.25 h-5.25" />
-                <span className="capitalize text-[18px] text-neutral-100">
+                <Location className="w-5.25 h-5.25 text-tint-400" />
+                <span className="capitalize text-sm md:text-[18px] text-neutral-100">
                   {getSection[0].halls}
                 </span>
               </div>
             </div>
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center gap-2">
-                <Clock className="w-5.25 h-5.25" />
-                <span className=" text-[18px] text-neutral-100">{oClock}</span>
+                <Clock className="w-5.25 h-5.25 text-tint-400" />
+                <span className="text-sm md:text-[18px] text-neutral-100">
+                  {oClock}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Ticket className="w-5.25 h-5.25 fill-neutral-200" />
-                <span className=" text-[18px] text-neutral-100">
+                <span className="text-sm md:text-[18px] text-neutral-100">
                   From{" "}
                   <span className="capitalize text-white font-bold">
                     {Math.min(...getSection[0].price)}
@@ -102,49 +104,48 @@ const page = async ({
               </div>
             </div>
           </div>
-          <LittleInfoSeat />
+          <div className="mt-8">
+            <LittleInfoSeat />
+          </div>
         </div>
       </div>
-      <div className=" grid grid-cols-12 gap-6 px-rl">
-        <div className=" col-span-8 w-full h-fit px-4 ">
-          <div className="w-full overflow-x-auto overflow-y-visible px-20 mx-0 pt-40 -mt-40 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
-            <SeatStageMap
-              data={getHalls}
-              type={performance}
-              turn={{
-                turn: turnnumbreId,
-                clock: getSection[0].clock,
-                date: eventDate,
-              }}
-              eventName={eventName}
-              eventId={idNumber}
-              prices={getSection[0].price}
-            />
+
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 px-8 lg:px-rl pb-20">
+        <div className="lg:col-span-8 w-full h-fit">
+          <div className="w-full overflow-x-auto overflow-y-visible px-4 md:px-20 pt-10 lg:pt-40 lg:-mt-40 no-scrollbar lg:custom-scrollbar">
+            <div className="min-w-150 lg:min-w-full">
+              <SeatStageMap
+                data={getHalls}
+                type={performance}
+                turn={{
+                  turn: turnnumbreId,
+                  clock: getSection[0].clock,
+                  date: eventDate,
+                }}
+                eventName={eventName}
+                eventId={idNumber}
+                prices={getSection[0].price}
+              />
+            </div>
           </div>
-          <div className=" my-8 px-6 py-3 rounded-three bg-neutral-1000 w-full flex justify-between items-center">
-            <div className="flex items-center gap-x-4">
-              <Seat className=" fill-white" />
-              <span>Available</span>
-            </div>
-            <div className="flex items-center gap-x-4">
-              <Seat className=" fill-neutral-300" />
-              <span>Sold</span>
-            </div>
-            <div className="flex items-center gap-x-4">
-              <Seat className=" fill-main" />
-              <span>You Selected</span>
-            </div>
-            <div className="flex items-center gap-x-4">
-              <Seat className=" fill-success-400" />
-              <span>You Payment</span>
-            </div>
-            <div className="flex items-center gap-x-4">
-              <Seat className="  fill-warning-400" />
-              <span>Pending</span>
-            </div>
+
+          <div className="my-8 px-4 py-4 rounded-three bg-neutral-1000 w-full flex flex-wrap lg:flex-nowrap justify-center lg:justify-between items-center gap-4">
+            {[
+              { icon: <Seat className="fill-white" />, label: "Available" },
+              { icon: <Seat className="fill-neutral-300" />, label: "Sold" },
+              { icon: <Seat className="fill-main" />, label: "Selected" },
+              { icon: <Seat className="fill-success-400" />, label: "Paid" },
+              { icon: <Seat className="fill-warning-400" />, label: "Pending" },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-x-2 min-w-fit">
+                {item.icon}
+                <span className="text-xs md:text-sm">{item.label}</span>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="col-span-4 px-1 w-full h-screen overflow-y-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
+
+        <div className="lg:col-span-4 w-full h-auto lg:h-screen lg:overflow-y-auto lg:sticky lg:top-0">
           <SelectionManagerSeat
             getHalls={getHalls}
             type={performance}
@@ -152,11 +153,7 @@ const page = async ({
             eventName={eventName}
             eventId={idNumber}
             clock={oClock}
-            date={{
-              year,
-              month,
-              day,
-            }}
+            date={{ year, month, day }}
             prices={getSection[0].price}
           />
         </div>

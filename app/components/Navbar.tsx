@@ -1,6 +1,7 @@
 "use client";
 
-import { Logo } from "@/app/Ui/svg";
+import { Logo, MenuH } from "@/app/Ui/svg";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
@@ -11,9 +12,10 @@ import { useRouter } from "next/navigation";
 const menu = ["Home", "Shows", "Concerts", "Sports", "Festivals"];
 
 const Navbar = () => {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter()
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,69 +45,131 @@ const Navbar = () => {
   }, []);
 
   const handelSingOut = async () => {
-    // await supabase.auth.signOut();
-    // setUser(null);
-    // window.location.reload();
-    router.push("/profile/ticket")
+    router.push("/profile/ticket");
   };
 
   return (
-    <div className="flex justify-between items-center px-rl py-4">
-      <div>
-        <Logo className=" fill-main" />
+    <nav>
+      <div className="flex justify-between p-4 lg:hidden">
+        <Logo className="fill-main" />
+        <span
+          className="flex justify-end cursor-pointer"
+          onClick={() => setOpen(true)}
+        >
+          <MenuH className="fill-main" />
+        </span>
       </div>
-      <div>
+
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 bg-neutral-700/50 z-90 lg:hidden"
+            />
+
+            <motion.div
+              key="mobile-menu"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 100) setOpen(false);
+              }}
+              className="fixed left-0 right-0 bottom-0 w-full h-[85vh] rounded-t-3xl bg-tint-300 z-100 flex flex-col items-center p-6 gap-y-4 lg:hidden"
+            >
+              <div className="w-12 h-1.5 bg-neutral-500/30 rounded-full mb-2" />
+
+              <div className="w-full">
+                <ul className="flex flex-col items-center gap-y-6 mt-8 text-main">
+                  {menu.map((val) => (
+                    <li
+                      key={val}
+                      onClick={() => setOpen(false)}
+                      className="cursor-pointer text-2xl"
+                    >
+                      <Link
+                        href={
+                          val === "Home"
+                            ? "/home"
+                            : `/event/${val.toLowerCase()}`
+                        }
+                      >
+                        {val}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex gap-4 w-full mt-auto">
+                {loading ? (
+                  <LoadingDot />
+                ) : user ? (
+                  <span
+                    onClick={() => handelSingOut()}
+                    className="rounded-two w-full text-center bg-main text-white py-2 px-4"
+                  >
+                    {user.user_metadata.first_name}
+                  </span>
+                ) : (
+                  <Link
+                    href="/signup"
+                    onClick={() => setOpen(false)}
+                    className="rounded-two w-full text-center bg-main text-white py-2 px-4"
+                  >
+                    SignUp
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      <div className="hidden lg:flex lg:flex-row lg:justify-between lg:items-center lg:w-full lg:px-rl lg:py-4">
+        <Logo className="fill-main" />
         <ul className="flex gap-6 text-neutral-200">
-          {menu.map((val) => {
-            return (
-              <li
-                className="cursor-pointer text-[18px] hover:text-white transition-all ease-in duration-150"
-                key={val}
+          {menu.map((val) => (
+            <li
+              key={val}
+              className="cursor-pointer text-[18px] hover:text-white transition-all duration-150"
+            >
+              <Link
+                href={val === "Home" ? "/home" : `/event/${val.toLowerCase()}`}
               >
-                <Link
-                  href={`${val === "Home" ? `/${val.toLowerCase()}` : `/event/${val.toLowerCase()}`}`}
-                >
-                  {val}
-                </Link>
-              </li>
-            );
-          })}
+                {val}
+              </Link>
+            </li>
+          ))}
         </ul>
-      </div>
-      <div className="flex gap-4">
-        <select name="" id="">
-          <option value="eng">eng</option>
-        </select>
-        {loading && <LoadingDot />}
-        {!loading &&
-          (user ? (
-            <div className="flex items-center gap-4">
-              {/* {user.user_metadata.photo && (
-                <Image
-                  src={user.user_metadata.photo}
-                  alt={user.user_metadata.name || "User avatar"}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full"
-                />
-              )} */}
-              <span
-                onClick={() => handelSingOut()}
-                className=" rounded-two cursor-pointer transition-all ease-in duration-150 bg-main text-white border border-main py-1.25 px-4"
-              >
-                {user.user_metadata.first_name}
-              </span>
-            </div>
+        <div className="flex gap-4">
+          {loading ? (
+            <LoadingDot />
+          ) : user ? (
+            <span
+              onClick={() => handelSingOut()}
+              className="rounded-two cursor-pointer bg-main text-white py-1.25 px-4"
+            >
+              {user.user_metadata.first_name}
+            </span>
           ) : (
             <Link
               href="/signup"
-              className=" rounded-two transition-all ease-in duration-150 hover:bg-tint-1 bg-main text-white border border-main py-1.25 px-4 cursor-pointer"
+              className="rounded-two bg-main text-white py-1.25 px-4"
             >
               SignUp
             </Link>
-          ))}
+          )}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

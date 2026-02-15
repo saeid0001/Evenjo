@@ -68,24 +68,27 @@ ORDER DATE: ${DayText} ${Day} ${Month}
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrContent)}&bgcolor=28-28-28&color=c14fe6`;
 
   return (
-    <div className=" flex flex-col gap-y-8 h-full bg-neutral-800 rounded-three px-6 py-4 overflow-y-auto">
-      <div className=" flex gap-x-10">
-        <div className="w-[25%] flex flex-col items-center gap-y-2">
-          <div className=" relative w-full h-50">
+    <div className="flex flex-col gap-y-8 h-full bg-neutral-800 rounded-three px-4 md:px-6 py-4 overflow-y-auto">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-x-10">
+        <div className="w-full md:w-[25%] flex flex-col items-center gap-y-2">
+          <div className="relative w-full aspect-square md:aspect-auto md:h-50 lg:h-60 overflow-hidden rounded-three border border-neutral-700 shadow-sm">
             <Image
               src={imageEvent[0]}
-              alt=""
+              alt={eventName}
               fill
-              className="object-cover rounded-three"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 250px"
+              className="object-cover transition-transform duration-300 hover:scale-105"
             />
           </div>
-          <span className=" capitalize text-[20px] font-bold">
+          <span className="capitalize text-lg md:text-[20px] font-bold text-center">
             {eventType} {eventName}
           </span>
         </div>
-        <div className="w-[75%] flex flex-col justify-center gap-y-10">
-          <div className=" flex justify-between">
-            <span className=" text-[24px] font-bold text-main">
+
+        <div className="w-full md:w-[75%] flex flex-col justify-center gap-y-6 md:gap-y-10">
+          <div className="flex flex-col-reverse gap-y-2 sm:flex-row justify-between items-center">
+            <span className="text-xl md:text-[24px] font-bold text-main">
               Order Details
             </span>
             <TicketPDFDownloader
@@ -101,140 +104,152 @@ ORDER DATE: ${DayText} ${Day} ${Month}
               informationTickets={informationTickets}
             />
           </div>
-          <div className=" flex justify-between items-center">
-            <div className="flex flex-col gap-y-2">
-              <span className=" font-medium">Order Tracking Code</span>
-              <span className=" text-neutral-100"># {transactionID}</span>
+          <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4">
+            <div className="flex flex-col gap-y-1 md:gap-y-2 w-[45%] md:w-auto">
+              <span className="font-medium text-sm md:text-base">
+                Order Tracking Code
+              </span>
+              <span className="text-neutral-100 text-sm md:text-base">
+                # {transactionID}
+              </span>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <span className=" font-medium">Order Date</span>
-              <span className=" text-neutral-100">{`${DayText} ${Day} ${Month} - ${clockCreateAy} ${+clockCreateAy.slice(0, 2) + 2 >= 12 ? " PM" : " AM"}`}</span>
+            <div className="flex flex-col gap-y-1 md:gap-y-2 w-[45%] md:w-auto">
+              <span className="font-medium text-sm md:text-base">
+                Order Date
+              </span>
+              <span className="text-neutral-100 text-xs md:text-base whitespace-nowrap">
+                {`${DayText} ${Day} ${Month}`}
+              </span>
             </div>
-            <button className=" bg-success-300/8 text-success-300 px-4 py-2 rounded-three">
+            <button className="w-full md:w-auto bg-success-300/10 text-success-300 px-4 py-2 rounded-three text-sm">
               Success
             </button>
           </div>
         </div>
       </div>
-      <div className=" flex flex-col gap-y-2">
-        <div className="flex items-center gap-x-4 ">
-          <span className=" text-tint-400 text-[24px] font-bold text-nowrap">
+      <div className="flex flex-col gap-y-4">
+        <div className="flex items-center gap-x-4">
+          <span className="text-tint-400 text-xl md:text-[24px] font-bold text-nowrap">
             Event Details
           </span>
-          <span className=" w-full h-px bg-neutral-500" />
+          <span className="w-full h-px bg-neutral-500" />
         </div>
-        <div className=" flex justify-between items-center">
-          <div className="flex flex-col gap-y-2">
-            <span className=" font-medium flex items-center gap-x-2 text-[18px]">
-              <Location className="w-6 h-6 fill-white" />
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-y-6 md:gap-x-4">
+          <div className="flex flex-col gap-y-1 md:gap-y-2">
+            <span className="font-medium flex items-center gap-x-2 text-base md:text-[18px]">
+              <Location className="w-5 h-5 fill-white" />
               Location
             </span>
-            <span className=" text-neutral-100">{locationEvent}</span>
+            <span className="text-neutral-100 text-sm md:text-base">
+              {locationEvent}
+            </span>
           </div>
-          <div className="flex flex-col gap-y-2">
-            <span className=" font-medium flex items-center gap-x-2 text-[18px]">
-              <Calendar className="w-6 h-6 fill-white" />
+          <div className="flex flex-col gap-y-1 md:gap-y-2">
+            <span className="font-medium flex items-center gap-x-2 text-base md:text-[18px]">
+              <Calendar className="w-5 h-5 fill-white" />
               Event Date
             </span>
-            <span className=" text-neutral-100">{`${MonthDate} ${DayDate} ${DayTextDate} - ${clock} ${+clock.slice(0, 2) + 2 >= 12 ? " PM" : " AM"}`}</span>
+            <span className="text-neutral-100 text-sm md:text-base">{`${MonthDate} ${DayDate} ${DayTextDate}`}</span>
           </div>
-          <div className="flex flex-col gap-y-2">
-            <span className=" font-medium flex items-center gap-x-2 text-[18px]">
-              <Chair className="w-6 h-6 fill-white" />
+          <div className="flex flex-col gap-y-1 md:gap-y-2 w-full md:w-auto">
+            <span className="font-medium flex items-center gap-x-2 text-base md:text-[18px]">
+              <Chair className="w-5 h-5 fill-white" />
               Selected Seat
             </span>
-            <div className=" text-neutral-100 px-2 flex flex-col max-h-20 overflow-y-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-[10px]">
+            <div className="text-neutral-100 px-2 flex flex-col max-h-24 overflow-y-auto custom-scrollbar">
+              {/* محتوای Seat با همان ساختار قبلی */}
               {Object.entries(informationTickets).map(([sectionName, rows]) => (
-                <div
-                  key={sectionName}
-                  className="flex items-start justify-between gap-y-3"
-                >
-                  <h3 className="text-success-300 text-xl font-semibold flex items-center gap-2">
-                    {sectionName}
-                  </h3>
-
-                  <div className="flex flex-col pl-4">
-                    {Object.entries(rows).map(([rowName, numbers]) => (
-                      <div
-                        key={rowName}
-                        className="flex flex-wrap items-center gap-x-3 text-lg text-white"
-                      >
-                        <span className="flex items-center gap-x-2 text-neutral-100">
-                          Row: <strong className="text-white">{rowName}</strong>
-                          <Ellipse className="w-2 h-2 fill-success-300" />
-                        </span>
-
-                        <span className="text-neutral-100">Seats:</span>
-                        <div className="flex flex-wrap gap-x-1 font-mono text-main">
-                          {numbers
-                            .sort((a, b) => a - b)
-                            .map((n, idx) => (
-                              <React.Fragment key={idx}>
-                                <span>{n}</span>
-                                {idx < numbers.length - 1 && (
-                                  <span className="text-neutral-100">,</span>
-                                )}
-                              </React.Fragment>
-                            ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div key={sectionName} className="text-sm md:text-base mb-2">
+                  <span className="text-success-300 font-bold">
+                    {sectionName}:{" "}
+                  </span>
+                  {Object.entries(rows)
+                    .map(([row, nums]) => `Row ${row} (${nums.join(",")})`)
+                    .join(" | ")}
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-y-2">
-        <div className="flex items-center gap-x-4 ">
-          <span className=" text-tint-400 text-[24px] font-bold text-nowrap">
+
+      <div className="flex flex-col gap-y-4">
+        <div className="flex items-center gap-x-4">
+          <span className="text-tint-400 text-xl md:text-[24px] font-bold text-nowrap">
             Payment
           </span>
-          <span className=" w-full h-px bg-neutral-500" />
+          <span className="w-full h-px bg-neutral-500" />
         </div>
-        <div className=" flex justify-between items-center w-full">
-          <div className="flex flex-col gap-y-10">
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">Ticket count</span>
-              <span className=" text-neutral-100">{ticketCount} tickets</span>
+
+        <div className="grid grid-cols-2 md:flex md:flex-row justify-between items-start gap-8 md:gap-x-4 w-full">
+          <div className="flex flex-col gap-y-1 md:gap-y-6">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
+                Ticket count
+              </span>
+              <span className="text-neutral-100 text-sm md:text-base">
+                {ticketCount} tickets
+              </span>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">Paid by</span>
-              <span className=" text-neutral-100">Negar khosravi</span>
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
+                Paid by
+              </span>
+              <span className="text-neutral-100 text-sm md:text-base">
+                Negar khosravi
+              </span>
             </div>
           </div>
-          <span className="w-px h-full bg-neutral-300" />
-          <div className="flex flex-col gap-y-10">
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">
+
+          <span className="hidden md:block w-px h-32 bg-neutral-700" />
+
+          <div className="flex flex-col gap-y-1 md:gap-y-6">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
                 Transaction costs
               </span>
-              <span className=" text-neutral-100">$100</span>
+              <span className="text-neutral-100 text-sm md:text-base">
+                $100
+              </span>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">Payment method</span>
-              <span className=" text-neutral-100">Stripe</span>
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
+                Payment method
+              </span>
+              <span className="text-neutral-100 text-sm md:text-base">
+                Stripe
+              </span>
             </div>
           </div>
-          <span className=" w-px h-full bg-neutral-300" />
-          <div className="flex flex-col gap-y-10">
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">Total paid</span>
-              <span className=" text-neutral-100">
+
+          <span className="hidden md:block w-px h-32 bg-neutral-700" />
+
+          <div className="flex flex-col gap-y-1 md:gap-y-6">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
+                Total paid
+              </span>
+              <span className="text-neutral-100 text-sm md:text-base font-bold text-main">
                 ${(totalPrice + 100).toLocaleString()}
               </span>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <span className=" text-[18px] font-medium">Transaction ID</span>
-              <span className=" text-neutral-100">{transactionID}</span>
+            <div className="flex flex-col gap-y-1">
+              <span className="text-sm md:text-[18px] font-medium text-neutral-400 md:text-white">
+                Transaction ID
+              </span>
+              <span className="text-neutral-100 text-[10px] md:text-sm break-all">
+                #{transactionID}
+              </span>
             </div>
           </div>
-          <span className=" w-px h-full bg-neutral-300" />
-          <div className="flex flex-col items-center gap-y-3">
-            <div className="p-2 rounded-two">
-              <img src={qrImageUrl} alt="QR" className="w-full rounded-three" />
-            </div>
+
+          <span className="hidden md:block w-px h-32 bg-neutral-700" />
+          <div className="col-span-2 md:col-span-1 flex flex-col items-center justify-center p-2 rounded-two">
+            <img
+              src={qrImageUrl}
+              alt="QR"
+              className="w-24 md:w-32 h-auto rounded-two"
+            />
           </div>
         </div>
       </div>

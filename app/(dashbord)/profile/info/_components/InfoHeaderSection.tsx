@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import AvatarUpload from "./AvatarUpload";
 import { useSeatStor } from "@/app/lib/useSeatStor";
-import { Edite } from "@/app/Ui/svg";
+import { Delete, Edite } from "@/app/Ui/svg";
 
 const InfoHeaderSection = ({
   infoUserProfile,
@@ -14,7 +14,7 @@ const InfoHeaderSection = ({
   const editeProfile = useSeatStor((state) => state.editeProfile);
   const ToggleEditeProfile = useSeatStor((state) => state.setEditeProfile);
   return (
-    <div className="bg-neutral-900 rounded-three p-6 flex justify-between items-center overflow-hidden">
+    <div className="bg-neutral-900 rounded-three p-6 flex flex-col sm:flex-row justify-between items-center overflow-hidden">
       <div className=" flex gap-x-4 items-center">
         <div className=" relative w-25 h-25">
           <Image
@@ -44,16 +44,21 @@ const InfoHeaderSection = ({
         {!editeProfile ? (
           <span
             onClick={() => ToggleEditeProfile(true)}
-            className=" cursor-pointer flex items-center gap-x-2"
+            className=" cursor-pointer flex  items-center gap-x-2"
           >
             <Edite />
             Edite
           </span>
         ) : (
-          <AvatarUpload
-            url={infoUserProfile.avatar_url || "/avatar.png"}
-            userId={infoUserProfile.id}
-          />
+          <div className="flex flex-col items-center">
+            <AvatarUpload
+              url={infoUserProfile.avatar_url || "/avatar.png"}
+              userId={infoUserProfile.id}
+            />
+            <span onClick={() => ToggleEditeProfile(false)}>
+              <Delete className=" stroke-amber-50" />
+            </span>
+          </div>
         )}
       </div>
     </div>

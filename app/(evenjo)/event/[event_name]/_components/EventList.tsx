@@ -34,11 +34,11 @@ const EventList = ({
   const hasMore = item.length < count;
 
   return (
-    <div className="px-rl my-14 flex flex-col items-center">
-      <div className=" grid grid-cols-12 gap-x-4">
+    <div className="px-8 lg:px-rl my-10 md:my-14 flex flex-col items-center gap-y-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-x-4 w-full">
         {item.map((val) => {
           return (
-            <div key={val.id} className=" col-span-3 h-fit">
+            <div key={val.id} className="h-fit w-full">
               <EventCart value={val} />
             </div>
           );
@@ -48,9 +48,15 @@ const EventList = ({
       {hasMore && (
         <button
           onClick={() => handelPagenation()}
-          className="w-fit bg-main px-4 py-3 rounded-two cursor-pointer hover:bg-main/80"
+          className="w-full sm:w-fit bg-main px-8 py-3.5 rounded-two cursor-pointer hover:bg-main/80 transition-all active:scale-95 font-bold shadow-lg shadow-main/20"
         >
-          {loading ? <LoadingDot /> : `View More ${type}`}
+          {loading ? (
+            <div className="flex justify-center items-center">
+              <LoadingDot />
+            </div>
+          ) : (
+            `View More ${type}`
+          )}
         </button>
       )}
     </div>

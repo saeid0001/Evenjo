@@ -1,11 +1,14 @@
 "use client";
 
-import { Logo, Ticket, User, Wallet } from "@/app/Ui/svg";
+import { supabase } from "@/app/lib/supabase";
+import { Logo, LogOut, Ticket, User } from "@/app/Ui/svg";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const NavBarDashbord = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const menu = [
     {
       name: "Tickets",
@@ -17,50 +20,66 @@ const NavBarDashbord = () => {
       path: "/profile/info",
       icon: User,
     },
-    {
-      name: "Payment",
-      path: "/profile/payment",
-      icon: Wallet,
-    },
   ];
+  const handelLogOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("See You Later");
+    router.push("/");
+  };
   return (
-    <div className=" flex flex-col gap-y-8">
+    <div className="flex flex-row lg:flex-col items-center lg:items-stretch justify-around lg:justify-start gap-y-8 h-full">
       <Link
         href={"/"}
-        className=" flex items-center justify-center w-full pt-4"
+        className="hidden lg:flex items-center justify-center w-full pt-4"
       >
-        <Logo className=" fill-main w-[50%] h-auto" />
+        <Logo className="fill-main w-[50%] h-auto" />
       </Link>
-      <hr className=" text-neutral-700" />
-      <div className="flex flex-col gap-y-2 items-strat">
+
+      <hr className="hidden lg:block border-neutral-700" />
+
+      <div className="flex flex-row lg:flex-col flex-1 w-full justify-around lg:justify-start gap-x-2 lg:gap-y-2">
         {menu.map((val) => {
+          const isActive = pathname === val.path;
           return (
             <Link
               href={val.path}
               key={val.name}
-              className="flex relative group transition-all ease-in duration-150 hover:bg-main/50 hover:mask-r-from-0 justify-start px-4 py-2 cursor-pointer gap-x-2 items-center"
+              className={`
+            flex flex-col lg:flex-row items-center lg:justify-start
+            px-3 py-2 lg:px-4 lg:py-2 rounded-two relative
+            transition-all duration-150 gap-1 lg:gap-x-2
+            ${isActive ? "text-main" : "text-white"}
+          `}
             >
-              {
-                <val.icon
-                  className={`${pathname === val.path ? "fill-main" : "fill-white"}`}
-                />
-              }
-              <span
-                className={`${pathname === val.path ? "text-main" : "text-white"}`}
-              >
+              <val.icon
+                className={`w-5 h-5 lg:w-6 lg:h-6 ${isActive ? "fill-main" : "fill-white"}`}
+              />
+
+              <span className="text-[10px] lg:text-base font-medium capitalize">
                 {val.name}
               </span>
-              {pathname === val.path && (
+
+              {isActive && (
                 <>
-                  <div className="w-1 h-full absolute top-0 left-0 bg-main" />
-                  <div className="w-5 h-full absolute top-0 left-0 opacity-30 bg-main mask-r-from-0" />
+                  <div className="hidden lg:block w-1 h-full absolute top-0 left-0 bg-main" />
+                  <div className="lg:hidden w-full h-1 absolute -top-2 left-0 bg-main rounded-full" />
                 </>
               )}
-              <div className="w-1 opacity-0 group-hover:opacity-100 h-full absolute top-0 left-0 bg-main" />
-              <div className="w-5 opacity-0 group-hover:opacity-30  h-full absolute top-0 left-0 bg-main mask-r-from-0" />
             </Link>
           );
         })}
+      </div>
+
+      <hr className="hidden lg:block border-neutral-700" />
+
+      <div
+        onClick={handelLogOut}
+        className="flex flex-col lg:flex-row items-center lg:justify-start px-3 py-2 lg:px-4 lg:py-2 gap-1 lg:gap-x-2 cursor-pointer"
+      >
+        <LogOut className="fill-white w-5 h-5 lg:w-6 lg:h-6" />
+        <span className="text-[10px] lg:text-base text-white font-medium">
+          Log Out
+        </span>
       </div>
     </div>
   );

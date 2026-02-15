@@ -42,7 +42,7 @@ const ReviewCheck = ({
           </div>
         </div>
       </div>
-      <div className=" flex gap-x-4 w-full">
+      <div className=" flex gap-x-4 w-full mt-5">
         <button
           onClick={() => route.back()}
           className=" w-full border border-main px-4 py-3 rounded-two cursor-pointer hover:bg-main/80"

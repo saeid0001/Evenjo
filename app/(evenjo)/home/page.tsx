@@ -27,28 +27,27 @@ const SportItemSction = async () => {
 };
 
 const page = async () => {
-  
   return (
     <div className=" relative">
       <div className="light_back animate-pulse" />
       <HeroSection />
       <Suspense fallback={<LoadingDot />}>
-        <div className="px-rl">
+        <div className="px-4 lg:px-rl">
           <ConcertItemSction />
         </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <div className="px-rl">
+        <div className="px-4 lg:px-rl">
           <ShowItemSction />
         </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <div className="px-rl">
+        <div className="px-4 lg:px-rl">
           <FestivalItemSction />
         </div>
       </Suspense>
       <Suspense fallback={<LoadingDot />}>
-        <div className="px-rl">
+        <div className="px-4 lg:px-rl">
           <SportItemSction />
         </div>
       </Suspense>
