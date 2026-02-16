@@ -28,12 +28,11 @@ export default function AvatarUpload({
         const newUrl = await uploadAvatar(userId, formData);
 
         setAvatarUrl(`${newUrl}?t=${new Date().getTime()}`);
-        toast.success("تصویر با موفقیت تغییر کرد");
+        toast.success("Image changed successfully");
         ToggleEditeProfile(false);
       } catch (error) {
-        console.log(error);
 
-        toast.error("خطا در آپلود تصویر");
+        toast.error("Error uploading image");
         setAvatarUrl(url);
       }
     });
@@ -63,8 +62,8 @@ export default function AvatarUpload({
         )}
       </div>
 
-      <label className="cursor-pointer bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded-lg text-sm transition-all">
-        {isPending ? "در حال آپلود..." : "تغییر عکس پروفایل"}
+      <label className="cursor-pointer capitalize bg-neutral-700 hover:bg-neutral-600 px-4 py-2 rounded-lg text-sm transition-all">
+        {isPending ? "Uploading ..." : "change your profile photo"}
         <input
           type="file"
           hidden

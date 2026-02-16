@@ -84,92 +84,92 @@ const FormChangeInfo = ({
           infoUserProfile.id,
           formInfo as unknown as UserProfile,
         );
-        toast.success("تغییرات با موفقیت ذخیره شد");
+        toast.success("Changes saved successfully");
       } catch (e) {
-        toast.error("خطا در بروزرسانی پروفایل");
+        toast.error("Error updating profile");
       }
     });
   };
 
   return (
     <div>
-  <form
-    onSubmit={handleSubmit}
-    className="grid grid-cols-12 gap-y-6 md:gap-y-8 gap-x-4"
-  >
-    {formFields.map((val) => {
-      const isEmail = val.id === "email";
-      
-      const colClass = "col-span-12 md:col-span-6";
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-12 gap-y-6 md:gap-y-8 gap-x-4"
+      >
+        {formFields.map((val) => {
+          const isEmail = val.id === "email";
 
-      if (val.type === "date") {
-        return (
-          <div key={val.id} className={colClass}>
-            <DatePicker
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              selected={
-                formInfo[val.id] ? new Date(formInfo[val.id]) : null
-              }
-              onChange={(date: Date | null) =>
-                handleInputChange(
-                  val.id,
-                  date ? date.toISOString().split("T")[0] : "",
-                )
-              }
-              dateFormat="yyyy/MM/dd"
-              calendarClassName="!bg-neutral-800 !border-neutral-700 !rounded-xl !p-2 !shadow-2xl"
-              dayClassName={() =>
-                "hover:!bg-main/20 !rounded-lg !text-neutral-200 transition-colors"
-              }
-              popperClassName="z-50!"
-              onKeyDown={(e) => e.preventDefault()}
-              customInput={
-                <InputForm
-                  label={val.label}
-                  type="text"
-                  placeholder="YYYY/MM/DD"
-                  valueDefult={formInfo[val.id]}
-                  svg={val.svg}
-                  inputFild={() => {}}
+          const colClass = "col-span-12 md:col-span-6";
+
+          if (val.type === "date") {
+            return (
+              <div key={val.id} className={colClass}>
+                <DatePicker
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  selected={
+                    formInfo[val.id] ? new Date(formInfo[val.id]) : null
+                  }
+                  onChange={(date: Date | null) =>
+                    handleInputChange(
+                      val.id,
+                      date ? date.toISOString().split("T")[0] : "",
+                    )
+                  }
+                  dateFormat="yyyy/MM/dd"
+                  calendarClassName="!bg-neutral-800 !border-neutral-700 !rounded-xl !p-2 !shadow-2xl"
+                  dayClassName={() =>
+                    "hover:!bg-main/20 !rounded-lg !text-neutral-200 transition-colors"
+                  }
+                  popperClassName="z-50!"
+                  onKeyDown={(e) => e.preventDefault()}
+                  customInput={
+                    <InputForm
+                      label={val.label}
+                      type="text"
+                      placeholder="YYYY/MM/DD"
+                      valueDefult={formInfo[val.id]}
+                      svg={val.svg}
+                      inputFild={() => {}}
+                    />
+                  }
                 />
-              }
-            />
-          </div>
-        );
-      }
-      return (
-        <div
-          key={val.id}
-          className={`${colClass} ${isEmail && "opacity-50"}`}
-        >
-          <InputForm
-            inputFild={(value: string) => handleInputChange(val.id, value)}
-            type={val.type}
-            label={val.label}
-            placeholder={val.label}
-            svg={val.svg}
-            valueDefult={formInfo[val.id]}
-            disabled={isEmail}
-          />
-        </div>
-      );
-    })}
+              </div>
+            );
+          }
+          return (
+            <div
+              key={val.id}
+              className={`${colClass} ${isEmail && "opacity-50"}`}
+            >
+              <InputForm
+                inputFild={(value: string) => handleInputChange(val.id, value)}
+                type={val.type}
+                label={val.label}
+                placeholder={val.label}
+                svg={val.svg}
+                valueDefult={formInfo[val.id]}
+                disabled={isEmail}
+              />
+            </div>
+          );
+        })}
 
-    <button
-      type="submit"
-      disabled={isPending}
-      className={`col-span-12 md:col-span-6 cursor-pointer py-3.5 rounded-two transition-all font-bold mt-2 md:mt-0 ${
-        isPending
-          ? "bg-neutral-600 cursor-wait opacity-70"
-          : "bg-main hover:bg-main/90 active:scale-[0.98] text-white shadow-lg shadow-main/20"
-      }`}
-    >
-      {isPending ? "Submitting ..." : "Save changes"}
-    </button>
-  </form>
-</div>
+        <button
+          type="submit"
+          disabled={isPending}
+          className={`col-span-12 md:col-span-6 cursor-pointer py-3.5 rounded-two transition-all font-bold mt-2 md:mt-0 ${
+            isPending
+              ? "bg-neutral-600 cursor-wait opacity-70"
+              : "bg-main hover:bg-main/90 active:scale-[0.98] text-white shadow-lg shadow-main/20"
+          }`}
+        >
+          {isPending ? "Submitting ..." : "Save changes"}
+        </button>
+      </form>
+    </div>
   );
 };
 

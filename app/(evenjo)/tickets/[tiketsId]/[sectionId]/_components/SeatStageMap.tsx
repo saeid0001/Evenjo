@@ -176,7 +176,6 @@ const SeatStageMap = ({
                           (val.status === "selected" ||
                             val.status === "payment"),
                       );
-                      console.log(myReservedSeats);
 
                       const hasConflict = myReservedSeats?.some(
                         (seat) =>

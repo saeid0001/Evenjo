@@ -80,7 +80,6 @@ const page = async ({
     counts[s] = (counts[s] || 0) + 1;
   });
 
-  console.log(Object.values(allTicketsGrouped));
 
   const myTickets = Object.fromEntries(
     Object.entries(allTicketsGrouped).filter(([, ticket]) => {

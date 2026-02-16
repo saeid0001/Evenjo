@@ -36,7 +36,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
           }}
         />
         <div className="px-rl py-12 lg:py-25 flex flex-col items-left justify-center">
-          <h1 className="max-w-3xl text-[250%] md:text-[400%] lg:text-[500%] text-left font-bold leading-tight">
+          <h1 className="max-w-3xl text-[200%] md:text-[400%] lg:text-[500%] text-left font-bold leading-tight">
             {eventName}
           </h1>
           <span className="max-w-lg mt-4 text-sm md:text-base">

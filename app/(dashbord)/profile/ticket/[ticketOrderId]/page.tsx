@@ -1,7 +1,7 @@
 import concertDate from "@/app/lib/concertDate";
 import { getDataByIdUserSeat, userTicketByOrderId } from "@/app/lib/server";
 import { getEventImage } from "@/app/lib/types/event";
-import { Calendar, Chair, Ellipse, Location } from "@/app/Ui/svg";
+import { Calendar, Chair, Location } from "@/app/Ui/svg";
 import Image from "next/image";
 import React from "react";
 import TicketPDFDownloader from "../_components/TicketPDFDownloader";
@@ -71,7 +71,7 @@ ORDER DATE: ${DayText} ${Day} ${Month}
     <div className="flex flex-col gap-y-8 h-full bg-neutral-800 rounded-three px-4 md:px-6 py-4 overflow-y-auto">
       <div className="flex flex-col md:flex-row gap-6 md:gap-x-10">
         <div className="w-full md:w-[25%] flex flex-col items-center gap-y-2">
-          <div className="relative w-full aspect-square md:aspect-auto md:h-50 lg:h-60 overflow-hidden rounded-three border border-neutral-700 shadow-sm">
+          <div className="relative w-full bg-red-400/20 aspect-square md:aspect-auto md:h-50 lg:h-60 overflow-hidden rounded-three border border-neutral-700 shadow-sm">
             <Image
               src={imageEvent[0]}
               alt={eventName}

@@ -1,20 +1,20 @@
 "use client";
 
 import { updateStatus } from "@/app/lib/actionServer";
+import { UserProfile } from "@/app/lib/types/event";
 import { Dollar, Messages, User as UserName } from "@/app/Ui/svg";
-import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
 const ReviewCheck = ({
   user,
   totalPrice,
 }: {
-  user: User;
+  user: UserProfile;
   totalPrice: number;
 }) => {
   const route = useRouter();
-  const name = `${user.user_metadata.name} ${user.user_metadata.full_name}`;
-  const email = `${user.user_metadata.email}`;
+  const name = `${user.first_name} ${user.last_name}`;
+  const email = `${user.email}`;
 
   const handelPaySeat = async () => {
     await updateStatus(user.id, "sold");

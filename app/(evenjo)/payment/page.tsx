@@ -2,7 +2,7 @@ import { getSupabase } from "@/app/lib/supabase-server";
 import CountDown from "./_components/CountDown";
 import PaymentCard from "./_components/PaymentCard";
 import PaymentTrigger from "./_components/PaymentTrigger";
-import { getAllEventSeatsByUserId } from "@/app/lib/server";
+import { getAllEventSeatsByUserId, userProfile } from "@/app/lib/server";
 import SimpleBanner from "./_components/SimpleBanner";
 import TriggerButton from "./_components/TriggerButton";
 import SelectPaymentWay from "./_components/SelectPaymentWay";
@@ -19,8 +19,8 @@ const page = async ({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log("user :", user);
   const getSeatUser = await getAllEventSeatsByUserId(user!.id, "payment");
+  const userInfo = await userProfile(supabase, user!.id);
 
   const params = await searchParams;
   const tiggr = params.triggr;
@@ -66,7 +66,7 @@ const page = async ({
 
             {tiggr === "Review" && (
               <ReviewCheck
-                user={user!}
+                user={userInfo}
                 totalPrice={totalPrice + ServicePrice}
               />
             )}

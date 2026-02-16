@@ -45,13 +45,15 @@ const Navbar = () => {
   }, []);
 
   const handelSingOut = async () => {
-    router.push("/profile/ticket");
+    router.push("/profile/ticket", { scroll: true });
   };
 
   return (
     <nav>
       <div className="flex justify-between p-4 lg:hidden">
-        <Logo className="fill-main" />
+        <Link href={"/"}>
+          <Logo className="fill-main" />
+        </Link>
         <span
           className="flex justify-end cursor-pointer"
           onClick={() => setOpen(true)}
@@ -83,7 +85,7 @@ const Navbar = () => {
               onDragEnd={(_, info) => {
                 if (info.offset.y > 100) setOpen(false);
               }}
-              className="fixed left-0 right-0 bottom-0 w-full h-[85vh] rounded-t-3xl bg-tint-300 z-100 flex flex-col items-center p-6 gap-y-4 lg:hidden"
+              className="fixed left-0 right-0 bottom-0 w-full h-[85vh] rounded-t-3xl bg-tint-300 z-1000 flex flex-col items-center p-6 gap-y-4 lg:hidden"
             >
               <div className="w-12 h-1.5 bg-neutral-500/30 rounded-full mb-2" />
 
@@ -134,7 +136,9 @@ const Navbar = () => {
       </AnimatePresence>
 
       <div className="hidden lg:flex lg:flex-row lg:justify-between lg:items-center lg:w-full lg:px-rl lg:py-4">
-        <Logo className="fill-main" />
+        <Link href={"/"}>
+          <Logo className="fill-main" />
+        </Link>
         <ul className="flex gap-6 text-neutral-200">
           {menu.map((val) => (
             <li

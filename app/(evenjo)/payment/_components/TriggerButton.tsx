@@ -10,7 +10,7 @@ const TriggerButton = () => {
   const UpdateCategory = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("triggr", category);
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.push(`?${params.toString()}`, { scroll: true });
   };
 
   const handelChangeTrigger = () => {

@@ -15,7 +15,7 @@ export async function submitDataToSupabase(items: SeatType) {
   const { error } = await supabase.from("event_seats").insert(payload);
   if (error) {
     console.error("Supabase Error:", error);
-    throw new Error(`خطا در ثبت اطلاعات : ${error}`);
+    throw new Error("خطا: " + JSON.stringify(error))
   }
 
   return { success: true };

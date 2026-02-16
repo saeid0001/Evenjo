@@ -53,7 +53,6 @@ const PaymentCard = async () => {
     {},
   );
 
-  console.log(informationTickets);
 
   return (
   <div>

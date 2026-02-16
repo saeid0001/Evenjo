@@ -26,7 +26,9 @@ const EventCart = ({ value }: { value: Event }) => {
     <div
       key={value.id}
       onClick={() =>
-        router.push(`/tickets/${name.replaceAll(" ", "")}_${value.data.id}`)
+        router.push(`/tickets/${name.replaceAll(" ", "")}_${value.data.id}`, {
+          scroll: true,
+        })
       }
       className="w-full h-fit relative cursor-pointer group"
     >
@@ -46,7 +48,7 @@ const EventCart = ({ value }: { value: Event }) => {
           onLoad={() => setIsLoadingImg(false)}
         />
       </div>
-      <div className=" min-h-32 z-20 w-[90%] mx-auto -translate-y-10 bg-neutral-800 group-hover:bg-neutral-400 transition-all ease-in duration-150 border border-neutral-500 rounded-four flex flex-col p-4 gap-y-2 ">
+      <div className=" min-h-42 z-20 w-[90%] mx-auto -translate-y-10 bg-neutral-800 group-hover:bg-neutral-400 transition-all ease-in duration-150 border border-neutral-500 rounded-four flex flex-col justify-between p-4 gap-y-2 ">
         <h3 className="text-[18px] lg:text-[20px] font-bold line-clamp-1 capitalize ">
           {name}
         </h3>
