@@ -4,6 +4,7 @@ import { SeatType } from "./useSeatStor";
 import { getSupabase } from "./supabase-server";
 import { generateOrderIdentifiers } from "./generateOrderIdentifiers";
 import { UserProfile } from "./types/event";
+import { revalidatePath } from "next/cache";
 
 export async function submitDataToSupabase(items: SeatType) {
   const supabase = await getSupabase();
@@ -103,6 +104,7 @@ export async function updateProfileUser(idUser: string, formInfo: UserProfile) {
     console.error("Supabase Error:", error);
     throw new Error(`خطا در به‌روزرسانی پروفایل : ${error}`);
   }
+  revalidatePath("/", "layout");
 
   return { success: true };
 }

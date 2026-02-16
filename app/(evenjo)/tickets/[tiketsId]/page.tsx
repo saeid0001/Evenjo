@@ -7,8 +7,10 @@ import {
 import { Location } from "@/app/Ui/svg";
 import Image from "next/image";
 import TimeCardTicket from "../_components/TimeCardTicket";
-import Map from "@/app/components/Map";
+// import Map from "@/app/components/Map";
 import EventsSection from "../../home/_components/EventsSection";
+
+import MapWrapper from "@/app/components/MapWrapper";
 
 const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
   const { tiketsId } = await params;
@@ -118,7 +120,7 @@ const page = async ({ params }: { params: Promise<{ tiketsId: string }> }) => {
             />
           </div>
           <div className="w-full h-48 lg:h-37.5 mt-6 rounded-three overflow-hidden border border-neutral-700">
-            <Map
+            <MapWrapper
               lat={lcationGo[0]}
               lon={lcationGo[1]}
               name={tiketsData.location.name}

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./components/QueryProvider";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "./components/ScrollToTop";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} antialiased bg-bg-body text-white`}
       >
+        <ScrollToTop />
         <Toaster />
         <QueryProvider>{children}</QueryProvider>
       </body>

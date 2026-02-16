@@ -8,6 +8,7 @@ import { Calendar, Location, Messages, Phone, User } from "@/app/Ui/svg";
 import React, { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import DatePicker from "react-datepicker";
+import { supabase } from "@/app/lib/supabase";
 
 const formFields = [
   {
@@ -84,6 +85,12 @@ const FormChangeInfo = ({
           infoUserProfile.id,
           formInfo as unknown as UserProfile,
         );
+        await supabase.auth.updateUser({
+          data: {
+            first_name: formInfo.first_name,
+            last_name: formInfo.last_name,
+          },
+        });
         toast.success("Changes saved successfully");
       } catch (e) {
         toast.error("Error updating profile");

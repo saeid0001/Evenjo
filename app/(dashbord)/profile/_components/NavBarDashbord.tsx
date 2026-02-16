@@ -30,9 +30,9 @@ const NavBarDashbord = () => {
     <div className="flex flex-row lg:flex-col items-center lg:items-stretch justify-around lg:justify-start gap-y-8 h-full">
       <Link
         href={"/"}
-        className="hidden lg:flex items-center justify-center w-full pt-4"
+        className=" lg:flex items-center justify-center w-fit lg:w-full lg:pt-4 pl-2"
       >
-        <Logo className="fill-main w-[50%] h-auto" />
+        <Logo className="fill-main lg:w-[50%] w-2/4 h-auto" />
       </Link>
 
       <hr className="hidden lg:block border-neutral-700" />
