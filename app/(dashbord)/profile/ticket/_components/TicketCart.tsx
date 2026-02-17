@@ -21,7 +21,6 @@ const TicketCart = ({ ticket }: { ticket: TiketType }) => {
   const currentStatus = statusMap[ticket.status as keyof typeof statusMap];
 
   const [, Month, Day, DayText] = concertDate(ticket.date);
-
   return (
     <div className="bg-neutral-700 p-4 md:p-5 rounded-three flex flex-col gap-y-4 w-full">
       <div className="flex justify-between items-start md:items-center">
@@ -74,11 +73,11 @@ const TicketCart = ({ ticket }: { ticket: TiketType }) => {
         </div>
 
         <Link
-          href={`ticket/${ticket.orderId}`}
+          href={`${ticket.status !== "sold" ? `/tickets/${ticket.eventName.replace(" ", "")}_${ticket.eventType}_${ticket.eventId}/section_${ticket.turn}` : `ticket/${ticket.orderId}`}`}
           className="flex items-center justify-center md:justify-start gap-x-1 px-2 py-2 md:py-1 rounded-two cursor-pointer hover:bg-main/30 transition-all bg-main/10 md:bg-transparent w-full md:w-auto mt-2 md:mt-0"
         >
           <span className="text-xs md:text-sm text-main font-bold md:font-medium whitespace-nowrap">
-            Ticket Details
+            {`${ticket.status !== "sold" ? `Go To Complited` : " Ticket Detail"}`}
           </span>
           <ArrowRight className="fill-main w-4 h-4 shrink-0" />
         </Link>

@@ -7,6 +7,8 @@ import Link from "next/link";
 
 export interface TiketType {
   eventName: string;
+  eventType: string;
+  eventId: string;
   turn: number;
   totalPrice: number;
   totalSeats: number;
@@ -15,6 +17,7 @@ export interface TiketType {
   date: string;
   trackingCode: string;
   orderId: string;
+  purchaseTime: number;
   sections: {
     [sectionName: string]: {
       [rowName: string]: number[];
@@ -43,6 +46,8 @@ const page = async ({
     if (!acc[groupKey]) {
       acc[groupKey] = {
         eventName: item.event_name,
+        eventType: item.event_type,
+        eventId: item.event_id,
         turn: item.turn_number,
         totalPrice: 0,
         status: item.status,
@@ -52,6 +57,7 @@ const page = async ({
         sections: {},
         trackingCode: item.trackingCode || "",
         orderId: item.orderId || "",
+        purchaseTime: new Date(item.created_at!).getTime(),
       };
     }
 
@@ -80,13 +86,16 @@ const page = async ({
     counts[s] = (counts[s] || 0) + 1;
   });
 
-
-  const myTickets = Object.fromEntries(
-    Object.entries(allTicketsGrouped).filter(([, ticket]) => {
+  const myTickets = Object.entries(allTicketsGrouped)
+    .filter(([, ticket]) => {
       if (status === "All") return true;
       return ticket.status === status;
-    }),
-  );
+    })
+    .sort(([, a], [, b]) => b.purchaseTime - a.purchaseTime)
+    .reduce(
+      (acc, [key, val]) => ({ ...acc, [key]: val }),
+      {},
+    ) as GroupedTickets;
 
   const buttonCount = Array.from({
     length: Math.ceil(Object.keys(myTickets).length / 4),
